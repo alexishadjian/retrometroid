@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --white: #fff;
+    --blue: #2A74ED;
+
+    --primary-color: var(--blue);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+.wrapper {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+}
