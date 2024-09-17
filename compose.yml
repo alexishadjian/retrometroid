@@ -8,7 +8,7 @@ services:
       - '3000:3000'
     volumes:
       - './frontend:/home/node/app'
-      - /home/node/app/node_modules
+      # - /home/node/app/node_modules
 
   backend:
     container_name: node_backend
@@ -19,7 +19,7 @@ services:
       - '3001:3001'
     volumes:
       - './backend:/home/node/app'
-      - /home/node/app/node_modules
+      # - /home/node/app/node_modules
     environment:
       - MONGO_URI=mongodb://mongo:27017/mydatabase
 
