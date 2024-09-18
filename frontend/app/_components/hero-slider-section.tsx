@@ -14,6 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Svg from "@/components/svg";
 import Button from './button';
+import HeadingButton from '@/components/heading-button';
 
 export default function HeroSliderSection() {
  
@@ -52,11 +53,7 @@ export default function HeroSliderSection() {
                                 height={300}
                                 style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center bottom' }}
                             />
-                            <div className="flex flex-col items-center justify-center h-2/4 gap-y-1">
-                                <h3 className="font-bebasNeue text-xl text-center opacity-70" style={{ color: slide.title.color }}>{slide.subtitle}</h3>
-                                <h2 className="font-bebasNeue text-8xl text-center font-black" style={{ color: slide.title.color }}>{slide.title.content}</h2>
-                                <Button content="Découvrir" link={slide.link} />
-                            </div>
+                            <HeadingButton title={slide.title.content} titleSize={100} titleColor={slide.title.color} subtitle={slide.subtitle} button="Découvrir" link={slide.link} />
                         </div>
                     </SwiperSlide>
                 ))}
