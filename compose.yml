@@ -1,6 +1,6 @@
 services:
   frontend:
-    container_name: next
+    container_name: frontend
     image: node:22-slim
     working_dir: /home/node/app
     command: /bin/sh -c 'npm config set strict-ssl false && npm install && npm run dev'
@@ -11,7 +11,7 @@ services:
       # - /home/node/app/node_modules
 
   backend:
-    container_name: node_backend
+    container_name: backend
     image: node:22-slim
     working_dir: /home/node/app
     command: /bin/sh -c 'npm config set strict-ssl false && npm install && node server.js'
@@ -23,8 +23,8 @@ services:
     environment:
       - MONGO_URI=mongodb://mongo:27017/mydatabase
 
-  mongo:
-    container_name: mongo
+  database:
+    container_name: database
     image: mongo:latest
     ports:
       - '27017:27017'
