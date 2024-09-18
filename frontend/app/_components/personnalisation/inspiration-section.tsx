@@ -5,9 +5,9 @@ import React from 'react';
 
 export default function ImageSlider() {
   const images = [
-    '/assets/image1.jpg',
-    '/assets/image2.jpg',
-    '/assets/image3.jpg',
+    '/slider/image1.jpg',
+    '/slider/image2.jpg',
+    '/slider/image3.jpg',
   ];
 
   return (
