@@ -3,12 +3,19 @@ import HeadingButton from "@/components/heading-button";
 type Props = {
     title: string;
     subtitle: string;
+    titleColor: string;
+    bgColor: string;
 };
 
-export default function TitleSection({ title, subtitle }: Props) {
+export default function TitleSection({ title, subtitle, titleColor, bgColor }: Props) {
     return (
-        <section className="rounded-2xl py-14 bg-[--light-gray] m-4">
-            <HeadingButton title={title} titleSize={90} titleColor="#000000" subtitle={subtitle} />
+        <section className="rounded-2xl py-14 m-4" style={{ background: bgColor }}>
+            <HeadingButton 
+                title={title}
+                titleSize={90}
+                titleColor={titleColor}
+                subtitle={subtitle}
+            />
         </section>
     );
 }
