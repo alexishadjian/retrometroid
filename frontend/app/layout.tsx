@@ -1,4 +1,5 @@
 import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 
 // FONTS IMPORT
@@ -25,8 +26,8 @@ import "./globals.css";
 // METADATA
 import type { Metadata } from "next";
 export const metadata: Metadata = {
-  title: 'Retro',
-  description: 'Retro',
+  title: 'Retrometroid',
+  description: 'Retrometroid, le site de vente de consoles rétro',
 };
 
 
@@ -36,6 +37,7 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
             <body className={`${roboto.className} ${roboto.variable} ${bebasNeue.variable} antialiased`} >
                 <Header />
                 {children}
+                <Footer />
             </body>
         </html>
     );
