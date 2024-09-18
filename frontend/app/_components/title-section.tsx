@@ -7,8 +7,8 @@ type Props = {
 
 export default function TitleSection({ title, subtitle }: Props) {
     return (
-        <div className="rounded-2xl py-14 bg-[--light-gray] m-4">
+        <section className="rounded-2xl py-14 bg-[--light-gray] m-4">
             <HeadingButton title={title} titleSize={90} titleColor="#000000" subtitle={subtitle} />
-        </div>
+        </section>
     );
 }
