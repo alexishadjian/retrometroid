@@ -32,8 +32,8 @@ const bebasNeue = Bebas_Neue({
 
 
 export const metadata: Metadata = {
-    title: "Retro",
-    description: "Retro",
+  title: 'Retro',
+  description: 'Retro',
 };
 
 export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
