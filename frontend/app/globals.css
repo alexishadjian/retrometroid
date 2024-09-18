@@ -9,19 +9,27 @@
     --light-blue: #26A0F3;
     --light-gray: #f4f8fc;
 
-    --primary-color: var(--blue);
+  --primary-color: var(--blue);
 }
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: 55px;
+  background-color: rgb(247, 247, 247);
 }
 
+.wrapper {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
+}
 
 .wrapper-small {
     max-width: 1000px;
@@ -30,7 +38,4 @@ body {
     width: 90%;
 }
 
-.wrapper {
-    padding-left: 30px;
-    padding-right: 30px;
-}
+
