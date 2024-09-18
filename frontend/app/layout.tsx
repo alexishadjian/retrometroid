@@ -1,47 +1,51 @@
-import type { Metadata } from "next";
-// import localFont from "next/font/local";
-import "./globals.css";
+import { Favicon } from "@/public/images";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 
-// const geistSans = localFont({
-//     src: "./fonts/GeistVF.woff",
-//     variable: "--font-geist-sans",
-//     weight: "100 900",
-// });
-// const geistMono = localFont({
-//   src: "./fonts/GeistMonoVF.woff",
-//   variable: "--font-geist-mono",
-//   weight: "100 900",
-// });
 
-//FONT
-import { Roboto } from "next/font/google";
+// FONTS IMPORT
+import { Roboto, Bebas_Neue } from "next/font/google";
 const roboto = Roboto({ 
     subsets: ["latin"],
     style: ['normal', 'italic'],
-    weight: ["100", "300", "400", "500", "700", "900"],
+    weight: ["400", "500", "700"],
     variable: "--font-roboto",
+    display: 'swap',
 });
-
-import { Bebas_Neue } from "next/font/google";
 const bebasNeue = Bebas_Neue({ 
     subsets: ["latin"],
     style: ['normal'],
     weight: ["400"],
     variable: "--font-bebasNeue",
+    display: 'swap',
 });
 
+// CSS IMPORT
+import "./globals.css";
 
+
+// METADATA
+import type { Metadata } from "next";
 export const metadata: Metadata = {
-    title: "Retro",
-    description: "Retro",
+  title: 'Retrometroid',
+  description: 'Retrometroid, le site de vente de consoles rétro',
+  icons: [
+    {
+        rel: "icon",
+        type: "image/png",
+        url: Favicon.src,
+    },
+  ],
 };
+
 
 export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
     return (
         <html lang="en">
-            {/* <body className={`${geistSans.variable} antialiased`}> */}
-            <body className={roboto.className} >
+            <body className={`${roboto.className} ${roboto.variable} ${bebasNeue.variable} antialiased`} >
+                <Header />
                 {children}
+                <Footer />
             </body>
         </html>
     );
