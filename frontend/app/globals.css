@@ -3,27 +3,27 @@
 @tailwind utilities;
 
 :root {
-    --white: #fff;
-    --blue: #2A74ED;
+  --white: #fff;
+  --blue: #2a74ed;
 
-    --primary-color: var(--blue);
+  --primary-color: var(--blue);
 }
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    padding-top: 55px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: 55px;
+  background-color: rgb(247, 247, 247);
 }
 
-
 .wrapper {
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
 }
