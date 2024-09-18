@@ -1,23 +1,18 @@
-const express = require('express');
-const mongoose = require('mongoose');
 require('dotenv').config();
+const express = require("express");
+const http = require("http");
+const app = express();
+const bodyParser = require("body-parser")
+const cors = require("cors")
+import express, { Request, Response } from 'express';
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = 3001;
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => {
-  console.log('Connected to MongoDB');
-}).catch(err => {
-  console.error('Failed to connect to MongoDB', err);
-});
-
-app.get('/', (req, res) => {
-  res.send('Hello from the backend with MongoDB!');
+app.get('/', (req: Request, res: Response) => {
+  res.send('coucou les amis');
 });
 
 app.listen(port, () => {
-  console.log(`Backend server started on port ${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });
