@@ -1,4 +1,5 @@
 import Logo from './global/logo.webp';
+import Favicon from './global/favicon.jpg';
 import GBC1 from './global/gbc-1.jpg';
 import GBC2 from './global/gbc-2.jpg';
 import GBC3 from './global/gbc-3.jpg';
@@ -12,15 +13,15 @@ import Product3 from './home/product-3.webp';
 import Product4 from './home/product-4.png';
 
 
-
 export {
     Logo,
+    Favicon,
     HeroSliderImage1,
     HeroSliderImage2,
     Product1,
     Product2,
     Product3,
-    Product
+    Product4,
     GBC1,
     GBC2,
     GBC3,

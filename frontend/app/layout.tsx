@@ -1,3 +1,4 @@
+import { Favicon } from "@/public/images";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 
@@ -28,6 +29,13 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: 'Retrometroid',
   description: 'Retrometroid, le site de vente de consoles rétro',
+  icons: [
+    {
+        rel: "icon",
+        type: "image/png",
+        url: Favicon.src,
+    },
+  ],
 };
 
 
