@@ -1,20 +1,17 @@
 "use client";
 
+import Image from "next/image";
+
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
+import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
-
-
+import 'swiper/css/pagination';
 import 'swiper/swiper-bundle.css';
+
 import { HeroSliderImage1, HeroSliderImage2 } from '@/images';
-
-
-import Image from "next/image";
-import Link from "next/link";
-import Svg from "@/components/svg";
-import Button from './button';
 import HeadingButton from '@/components/heading-button';
+
 
 export default function HeroSliderSection() {
  
@@ -26,16 +23,15 @@ export default function HeroSliderSection() {
     return (
         <section>
             <Swiper
-                modules={[Navigation, Autoplay]}
+                modules={[Pagination,  Navigation, Autoplay]}
                 spaceBetween={0}
                 slidesPerView={1}
-                onSlideChange={() => console.log('slide change')}
-                onSwiper={(swiper) => console.log(swiper)}
                 navigation={{
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev',
                 }}
                 loop={true}
+                pagination={{ clickable: true }}
                 autoplay={{
                     delay: 3000,
                     disableOnInteraction: false,
@@ -44,7 +40,7 @@ export default function HeroSliderSection() {
             
                 {slides.map(slide => (
                     <SwiperSlide key={slide.id}>
-                        <div className="relative w-screen h-screen">
+                        <div className="relative w-screen h-[93.2vh]">
                             <Image
                                 className="absolute inset-0 z-[-1]"
                                 src={slide.image}
@@ -54,7 +50,14 @@ export default function HeroSliderSection() {
                                 style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center bottom' }}
                             />
                             <div className="flex flex-col items-center justify-center h-1/2">
-                                <HeadingButton title={slide.title.content} titleSize={100} titleColor={slide.title.color} subtitle={slide.subtitle} button="Découvrir" link={slide.link} />
+                                <HeadingButton
+                                    title={slide.title.content}
+                                    titleSize={100}
+                                    titleColor={slide.title.color}
+                                    subtitle={slide.subtitle}
+                                    button="Découvrir"
+                                    link={slide.link}
+                                />
                             </div>
                         </div>
                     </SwiperSlide>

@@ -1,5 +1,6 @@
-import ProductCard from "./product-card";
 import { Product1, Product2, Product3, Product4 } from "@/public/images";
+import TitleSection from "@/components/title-section";
+import ProductCard from "@/components/product-card";
 
 export default function CustomProductSection() {
 
@@ -11,18 +12,28 @@ export default function CustomProductSection() {
     ];
 
     return (
-        <section className="flex flex-wrap m-3">
-            {products.map((product, index) => (
-                <ProductCard
-                    key={index}
-                    title={product.title}
-                    titleColor={product.titleColor}
-                    subtitle={product.subtitle}
-                    image={product.image}
-                    bgColor={product.bgColor}
-                    width={product.width}
-                />
-            ))}
+        <section>
+            
+            <TitleSection
+                title="CUSTOMISATION"
+                subtitle="Construit ta propre console"
+                titleColor="#000000"
+                bgColor="#f4f8fc"
+            />
+
+            <div className="flex flex-wrap m-3">
+                {products.map((product, index) => (
+                    <ProductCard
+                        key={index}
+                        title={product.title}
+                        titleColor={product.titleColor}
+                        subtitle={product.subtitle}
+                        image={product.image}
+                        bgColor={product.bgColor}
+                        width={product.width}
+                    />
+                ))}
+            </div>
         </section>
     );
 }

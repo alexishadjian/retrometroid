@@ -14,7 +14,14 @@ export default function ProductCard({ title, titleColor, subtitle, image, bgColo
     return (
         <div className= {`flex flex-col justify-between rounded-3xl p-2 !bg-clip-content ${width === "big" ? "w-3/5" : "w-2/5"}`} style={{background: `linear-gradient(${bgColor})`}}>
             <div className="py-14">
-                <HeadingButton title={title} titleSize={60} titleColor={titleColor} subtitle={subtitle} button="Personnaliser" link="/" />
+                <HeadingButton
+                    title={title}
+                    titleSize={60}
+                    titleColor={titleColor}
+                    subtitle={subtitle}
+                    button="Personnaliser"
+                    link="/"
+                />
             </div>
             <div className="flex justify-center items-end h-[170px]">
                 <Image
