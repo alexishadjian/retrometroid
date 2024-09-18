@@ -6,9 +6,9 @@ import { Logo } from "@/images";
 export default function Header() {
     return (
         <header className="bg-[--white] fixed left-0 top-0 right-0 shadow-md z-10">
-            <div className="flex justify-between items-center wrapper">
+            <div className="flex justify-between items-center wrapper-small">
 
-                <Link href="/"className="logo">
+                <Link href="/" className="logo">
                     <Image 
                         src={Logo}
                         alt="Logo"
@@ -19,7 +19,7 @@ export default function Header() {
                 </Link>
                 
                 <nav className="flex gap-1">
-                    <Link href="/config" className="p-4 text-[15px] font-bebasNeue transition-colors hover:text-[--primary-color]">PERSONNALISATION</Link>
+                    <Link href="/personnalisation-gameboy" className="p-4 text-[15px] font-bebasNeue transition-colors hover:text-[--primary-color]">PERSONNALISATION</Link>
                     <Link href="/" className="p-4 text-[15px] font-bebasNeue transition-colors hover:text-[--primary-color]">PSVITA - OLED</Link>
                     <Link href="/" className="p-4 text-[15px] font-bebasNeue transition-colors hover:text-[--primary-color]">ÉDITIONS LIMITÉES</Link>
                     <Link href="/" className="p-4 text-[15px] font-bebasNeue transition-colors hover:text-[--primary-color]">ACCESSOIRES</Link>
