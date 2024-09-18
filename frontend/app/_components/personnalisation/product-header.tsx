@@ -4,7 +4,7 @@ import { BriefcaseBusiness } from 'lucide-react';
 export default function ProductHeader() {
   return (
     <div>
-      <div className="bg-gray-900 w-full">
+      <div className="bg-[#121212] w-full">
         <div className="p-6 md:pt-24 pt-10">
           <p className="text-gray-400 font-thin">À partir de 149€</p>
           <h1 className="uppercase text-white font-extrabold md:text-5xl text-2xl">
