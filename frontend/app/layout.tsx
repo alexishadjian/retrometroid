@@ -25,8 +25,8 @@ import "./globals.css";
 // METADATA
 import type { Metadata } from "next";
 export const metadata: Metadata = {
-    title: "Retro",
-    description: "Retro",
+  title: 'Retro',
+  description: 'Retro',
 };
 
 
