@@ -53,7 +53,9 @@ export default function HeroSliderSection() {
                                 height={300}
                                 style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center bottom' }}
                             />
-                            <HeadingButton title={slide.title.content} titleSize={100} titleColor={slide.title.color} subtitle={slide.subtitle} button="Découvrir" link={slide.link} />
+                            <div className="flex flex-col items-center justify-center h-1/2">
+                                <HeadingButton title={slide.title.content} titleSize={100} titleColor={slide.title.color} subtitle={slide.subtitle} button="Découvrir" link={slide.link} />
+                            </div>
                         </div>
                     </SwiperSlide>
                 ))}
