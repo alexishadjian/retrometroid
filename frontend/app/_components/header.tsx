@@ -1,15 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import Svg from "@/components/svg";
+import { Logo } from "@/images";
 
 export default function Header() {
     return (
-        <header className="bg-[--white] fixed left-0 top-0 right-0 shadow-md">
+        <header className="bg-[--white] fixed left-0 top-0 right-0 shadow-md z-10">
             <div className="flex justify-between items-center wrapper">
 
                 <Link href="/"className="logo">
                     <Image 
-                        src="/logo.webp"
+                        src={Logo}
                         alt="Logo"
                         width={120}
                         height={20}
