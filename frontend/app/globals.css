@@ -7,6 +7,7 @@
     --black: #000;
     --blue: #2A74ED;
     --light-blue: #26A0F3;
+    --light-gray: #f4f8fc;
 
   --primary-color: var(--blue);
 }
