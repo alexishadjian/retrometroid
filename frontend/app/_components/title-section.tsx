@@ -12,7 +12,7 @@ export default function TitleSection({ title, subtitle, titleColor, bgColor }: P
         <section className="rounded-2xl py-14 m-4" style={{ background: bgColor }}>
             <HeadingButton 
                 title={title}
-                titleSize={90}
+                titleSize={{sm: 55, md: 90}}
                 titleColor={titleColor}
                 subtitle={subtitle}
             />
