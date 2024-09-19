@@ -13,7 +13,7 @@ services:
     container_name: backend
     image: node:22-slim
     working_dir: /home/node/app
-    command: /bin/sh -c 'npm config set strict-ssl false && npm install && node --loader ts-node/esm server.ts'
+    command: /bin/sh -c 'npm config set strict-ssl false && npm install && node --loader ts-node/esm src/server.ts'
     ports:
       - '3001:3001'
     volumes:
