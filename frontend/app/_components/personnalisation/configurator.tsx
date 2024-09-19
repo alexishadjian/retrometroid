@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RefreshCcw, ChevronDown, ChevronRight } from 'lucide-react';
 import Image, { StaticImageData } from 'next/image';
 import {
@@ -38,9 +38,8 @@ import {
   GBA_SHELL_GREEN,
   GBA_SHELL_YELLOW,
 } from '@/public/images/gba_front';
+import PriceSection from './price_section';
 
-// Définir les types pour les parties et les couleurs spécifiques
-type PartType = 'GBA_BUTTON' | 'GBA_PAD' | 'GBA_SHELL' | 'GBA_IPS';
 type PADColorType =
   | '#000000'
   | '#0000FF'
@@ -77,13 +76,70 @@ type SHELLColorType =
   | '#FFFF00';
 type IPSColorType = '#000000' | '#B22222';
 
-// Typing des options de configuration
-const options: {
-  name: string;
-  description: string;
-  colors: (PADColorType | BUTTONColorType | SHELLColorType | IPSColorType)[];
-  part: PartType;
-}[] = [
+const colorNames: Record<string, string> = {
+  '#000000': 'black',
+  '#0000FF': 'blue',
+  '#FFFFFF': 'white',
+  '#00FF00': 'green',
+  '#FF0000': 'red',
+  '#FFC0CB': 'pink',
+  '#800080': 'purple',
+  '#FFFF00': 'yellow',
+  '#A9A9A9': 'dark grey',
+  '#ADD8E6': 'light blue',
+  '#00FF7F': 'spring green',
+  '#FFA500': 'orange',
+  '#B22222': 'fire brick',
+  '#808080': 'grey',
+  '#FFA07A': 'light salmon',
+  '#708090': 'slate grey',
+};
+
+const colorPrices: Record<string, Record<string, number>> = {
+  GBA_PAD: {
+    '#000000': 0,
+    '#0000FF': 10,
+    '#FFFFFF': 15,
+    '#00FF00': 10,
+    '#FF0000': 20,
+    '#FFC0CB': 15,
+    '#800080': 5,
+    '#FFFF00': 10,
+  },
+  GBA_BUTTON: {
+    '#000000': 0,
+    '#0000FF': 5,
+    '#A9A9A9': 10,
+    '#ADD8E6': 10,
+    '#00FF7F': 15,
+    '#00FF00': 10,
+    '#FFA500': 20,
+    '#B22222': 25,
+    '#808080': 5,
+    '#FFA07A': 15,
+    '#FF0000': 20,
+    '#FFC0CB': 15,
+    '#FFFFFF': 10,
+  },
+  GBA_SHELL: {
+    '#000000': 0,
+    '#0000FF': 20,
+    '#ADD8E6': 25,
+    '#FFFFFF': 30,
+    '#FFA500': 25,
+    '#FF0000': 35,
+    '#B22222': 30,
+    '#708090': 10,
+    '#00FF00': 20,
+    '#FFFF00': 25,
+  },
+  GBA_IPS: {
+    '#000000': 0,
+    '#B22222': 30,
+  },
+};
+
+[
   {
     name: 'PADS',
     description: 'Couleur des PADS',
@@ -144,7 +200,6 @@ const options: {
   },
 ];
 
-// Définitions spécifiques pour les couleurs et les images
 const PAD_COLORS: Record<PADColorType, StaticImageData> = {
   '#000000': GBA_PAD_BLACK,
   '#0000FF': GBA_PAD_BLUE,
@@ -198,6 +253,8 @@ const colorOptions = {
 };
 
 export default function Configurator() {
+  const basePrice = 100; // Prix de base de la console
+
   const [selectedPadColor, setSelectedPadColor] =
     useState<PADColorType>('#000000');
   const [selectedButtonColor, setSelectedButtonColor] =
@@ -207,15 +264,33 @@ export default function Configurator() {
   const [selectedIpsColor, setSelectedIpsColor] =
     useState<IPSColorType>('#000000');
 
+  const [totalPrice, setTotalPrice] = useState(basePrice);
   const [openSection, setOpenSection] = useState<number | null>(null);
 
   const toggleSection = (index: number) => {
     setOpenSection(openSection === index ? null : index);
   };
 
+  useEffect(() => {
+    const calculateTotalPrice = () => {
+      let price = basePrice;
+      price += colorPrices.GBA_PAD[selectedPadColor];
+      price += colorPrices.GBA_BUTTON[selectedButtonColor];
+      price += colorPrices.GBA_SHELL[selectedShellColor];
+      price += colorPrices.GBA_IPS[selectedIpsColor];
+      setTotalPrice(price);
+    };
+
+    calculateTotalPrice();
+  }, [
+    selectedPadColor,
+    selectedButtonColor,
+    selectedShellColor,
+    selectedIpsColor,
+  ]);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
-      {/* Left section with phone & reload button */}
       <div className="flex flex-col items-center">
         <div className="flex justify-start w-full">
           <RefreshCcw size={32} color="#BEBFC5" className="mb-4" />
@@ -263,7 +338,6 @@ export default function Configurator() {
         </div>
       </div>
 
-      {/* Right section with options list & color picker */}
       <div className="flex flex-col justify-between">
         <h2 className="uppercase text-3xl font-roboto p-4">Configuration</h2>
 
@@ -332,6 +406,13 @@ export default function Configurator() {
         <div className="flex justify-center mt-6">
           <ChevronDown />
         </div>
+        <PriceSection
+          totalPrice={totalPrice}
+          selectedPadColor={colorNames[selectedPadColor]}
+          selectedButtonColor={colorNames[selectedButtonColor]}
+          selectedShellColor={colorNames[selectedShellColor]}
+          selectedIpsColor={colorNames[selectedIpsColor]}
+        />
       </div>
     </div>
   );
