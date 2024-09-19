@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RefreshCcw, ChevronDown, ChevronRight } from 'lucide-react';
 import Image, { StaticImageData } from 'next/image';
 import {
@@ -38,6 +38,7 @@ import {
   GBA_SHELL_GREEN,
   GBA_SHELL_YELLOW,
 } from '@/public/images/gba_front';
+import PriceSection from './price_section';
 
 // Définir les types pour les parties et les couleurs spécifiques
 type PartType = 'GBA_BUTTON' | 'GBA_PAD' | 'GBA_SHELL' | 'GBA_IPS';
@@ -76,6 +77,50 @@ type SHELLColorType =
   | '#00FF00'
   | '#FFFF00';
 type IPSColorType = '#000000' | '#B22222';
+
+const colorPrices: Record<string, Record<string, number>> = {
+  GBA_PAD: {
+    '#000000': 0,
+    '#0000FF': 10,
+    '#FFFFFF': 15,
+    '#00FF00': 10,
+    '#FF0000': 20,
+    '#FFC0CB': 15,
+    '#800080': 5,
+    '#FFFF00': 10,
+  },
+  GBA_BUTTON: {
+    '#000000': 0,
+    '#0000FF': 5,
+    '#A9A9A9': 10,
+    '#ADD8E6': 10,
+    '#00FF7F': 15,
+    '#00FF00': 10,
+    '#FFA500': 20,
+    '#B22222': 25,
+    '#808080': 5,
+    '#FFA07A': 15,
+    '#FF0000': 20,
+    '#FFC0CB': 15,
+    '#FFFFFF': 10,
+  },
+  GBA_SHELL: {
+    '#000000': 0,
+    '#0000FF': 20,
+    '#ADD8E6': 25,
+    '#FFFFFF': 30,
+    '#FFA500': 25,
+    '#FF0000': 35,
+    '#B22222': 30,
+    '#708090': 10,
+    '#00FF00': 20,
+    '#FFFF00': 25,
+  },
+  GBA_IPS: {
+    '#000000': 0,
+    '#B22222': 30,
+  },
+};
 
 // Typing des options de configuration
 const options: {
@@ -198,6 +243,8 @@ const colorOptions = {
 };
 
 export default function Configurator() {
+  const basePrice = 100; // Prix de base de la console
+
   const [selectedPadColor, setSelectedPadColor] =
     useState<PADColorType>('#000000');
   const [selectedButtonColor, setSelectedButtonColor] =
@@ -207,11 +254,30 @@ export default function Configurator() {
   const [selectedIpsColor, setSelectedIpsColor] =
     useState<IPSColorType>('#000000');
 
+  const [totalPrice, setTotalPrice] = useState(basePrice);
   const [openSection, setOpenSection] = useState<number | null>(null);
 
   const toggleSection = (index: number) => {
     setOpenSection(openSection === index ? null : index);
   };
+
+  useEffect(() => {
+    const calculateTotalPrice = () => {
+      let price = basePrice;
+      price += colorPrices.GBA_PAD[selectedPadColor];
+      price += colorPrices.GBA_BUTTON[selectedButtonColor];
+      price += colorPrices.GBA_SHELL[selectedShellColor];
+      price += colorPrices.GBA_IPS[selectedIpsColor];
+      setTotalPrice(price);
+    };
+
+    calculateTotalPrice();
+  }, [
+    selectedPadColor,
+    selectedButtonColor,
+    selectedShellColor,
+    selectedIpsColor,
+  ]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
@@ -332,6 +398,7 @@ export default function Configurator() {
         <div className="flex justify-center mt-6">
           <ChevronDown />
         </div>
+        <PriceSection totalPrice={totalPrice} />
       </div>
     </div>
   );
