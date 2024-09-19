@@ -1,4 +1,6 @@
 import Options from '../models/options';
+import Products from '../models/products';
+import Subcategories from '../models/subCategories';
 
 /**
  * Get all options from the database.
@@ -17,15 +19,31 @@ export const getAllOptions = async () => {
 };
 
 /**
- * Create a new option in the database.
- * @param {Object} optionData - Data for the new option.
+ * Create a new option in the database and add it to a specific product.
+ * @param {Object} optionData - Data for the new option including the product ID.
  * @returns {Promise<Object>} The created option.
  */
 export const createOption = async (optionData: any) => {
   try {
-    console.log('Creating a new option with data:', optionData);
-    const option = new Options(optionData);
+    const { option_type, option_description, product_id } = optionData;
+
+    if (!product_id) {
+      throw new Error('Product ID is required to add an option.');
+    }
+
+    const option = new Options({
+      option_type,
+      option_description,
+      sub_categories: [],
+    });
+
     const savedOption = await option.save();
+
+    // Update the product to add the new option
+    await Products.findByIdAndUpdate(product_id, {
+      $push: { option_id: savedOption._id },
+    });
+
     console.log('New option created:', savedOption);
     return savedOption;
   } catch (err: any) {

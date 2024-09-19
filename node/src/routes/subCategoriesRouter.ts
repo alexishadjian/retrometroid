@@ -35,14 +35,20 @@ subcategoryRoutes.get('/', getSubcategories);
  * @swagger
  * /api/subcategories:
  *   post:
- *     summary: Create a new subcategory
+ *     summary: Create a new subcategory and add it to an option
  *     tags: [Subcategories]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Subcategory'
+ *             properties:
+ *               color_name:
+ *                 type: string
+ *               color_hexadecimal:
+ *                 type: string
+ *               option_id:
+ *                 type: string
  *     responses:
  *       201:
  *         description: The created subcategory

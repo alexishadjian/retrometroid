@@ -4,7 +4,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 interface IOption extends Document {
   option_type: string;
   option_description: string;
-  option_subcategory_id: mongoose.Types.ObjectId;
+  sub_categories: mongoose.Types.ObjectId[]; // Array of sub-category IDs
 }
 
 /**
@@ -16,7 +16,6 @@ interface IOption extends Document {
  *       required:
  *         - option_type
  *         - option_description
- *         - option_subcategory_id
  *       properties:
  *         option_type:
  *           type: string
@@ -24,17 +23,18 @@ interface IOption extends Document {
  *         option_description:
  *           type: string
  *           description: Description of the option
- *         option_subcategory_id:
- *           type: string
- *           description: ID of the subcategory the option belongs to
+ *         sub_categories:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: Array of sub-category IDs
  */
 const OptionsSchema: Schema = new Schema({
   option_type: { type: String, required: true },
   option_description: { type: String, required: true },
-  option_subcategory_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Subcategories',
-    required: true,
+  sub_categories: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Subcategories' }],
+    default: [],
   },
 });
 
