@@ -26,7 +26,11 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-// Démarrer le serveur
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  // Démarrer le serveur seulement si on n'est pas en mode test
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+}
+
+export default app;

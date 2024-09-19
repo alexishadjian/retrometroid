@@ -38,6 +38,12 @@ This project is licensed under the MIT License. See the [LICENSE](./LICENSE) fil
 
 Pour lancer le projet dans node faire :
 
+se placer dans le conteneur :
+
+```
+docker exec -it node-app /bin/bash
+```
+
 ```
 npx tsc
 ```
@@ -46,4 +52,12 @@ puis
 
 ```
 npm start
+```
+
+## Ajout de tests avec Jest
+
+Executer
+
+```
+npm run test
 ```
