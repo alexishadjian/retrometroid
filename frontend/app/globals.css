@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --white: #fff;
+    --black: #000;
+    --black2: #121212;
+    --blue: #2A74ED;
+    --light-blue: #26A0F3;
+    --light-gray: #f4f8fc;
+
+  --primary-color: var(--blue);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: 55px;
+  background-color: rgb(247, 247, 247);
+}
+
+.wrapper {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.wrapper-small {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+}
+
+

@@ -1,13 +1,13 @@
 services:
-  # frontend:
-  #   container_name: frontend
-  #   image: node:22-slim
-  #   working_dir: /home/node/app
-  #   command: /bin/sh -c 'npm config set strict-ssl false && npm install && npm run dev'
-  #   ports:
-  #     - '3000:3000'
-  #   volumes:
-  #     - './frontend:/home/node/app'
+  frontend:
+    container_name: frontend
+    image: node:22-slim
+    working_dir: /home/node/app
+    command: /bin/sh -c 'npm config set strict-ssl false && npm install && npm run dev'
+    ports:
+      - '3000:3000'
+    volumes:
+      - './frontend:/home/node/app'
 
   node:
     container_name: node-app

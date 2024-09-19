@@ -20,8 +20,14 @@
     "paths": {
       "@/*": ["./*"],
       "@/components/*": ["./app/_components/*"],
+      "@/images": ["./public/images/index"]
     }
   },
-  "include": ["frontend/next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "frontend/next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }

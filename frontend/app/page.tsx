@@ -1,7 +1,14 @@
+import HeroSliderSection from "@/components/hero-slider-section";
+import CustomProductSection from "@/components/custom-product-section";
+import LimitedEditionSection from "@/components/limited-edition-section";
+
 export default function Home() {
+    
     return (
         <div>
-            <h1>Retro</h1>
+            <HeroSliderSection />
+            <CustomProductSection />
+            <LimitedEditionSection />
         </div>
     );
 }
