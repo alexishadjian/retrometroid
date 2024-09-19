@@ -5,6 +5,8 @@ import connectDB from './database/connection';
 import productRoutes from './routes/productRouter';
 import optionRoutes from './routes/optionRouter';
 import subcategoryRoutes from './routes/subCategoriesRouter';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './swaggerConfig';
 
 dotenv.config();
 
@@ -21,6 +23,9 @@ app.use(bodyParser.json());
 app.use('/api/products', productRoutes);
 app.use('/api/options', optionRoutes);
 app.use('/api/subcategories', subcategoryRoutes);
+
+// Swagger Documentation Route
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
