@@ -1,19 +1,17 @@
 "use client";
 
+import Image from "next/image";
+
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
+import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
-
-
+import 'swiper/css/pagination';
 import 'swiper/swiper-bundle.css';
+
 import { HeroSliderImage1, HeroSliderImage2 } from '@/images';
+import HeadingButton from '@/components/heading-button';
 
-
-import Image from "next/image";
-import Link from "next/link";
-import Svg from "@/components/svg";
-import Button from './button';
 
 export default function HeroSliderSection() {
  
@@ -25,16 +23,15 @@ export default function HeroSliderSection() {
     return (
         <section>
             <Swiper
-                modules={[Navigation, Autoplay]}
+                modules={[Pagination,  Navigation, Autoplay]}
                 spaceBetween={0}
                 slidesPerView={1}
-                onSlideChange={() => console.log('slide change')}
-                onSwiper={(swiper) => console.log(swiper)}
                 navigation={{
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev',
                 }}
                 loop={true}
+                pagination={{ clickable: true }}
                 autoplay={{
                     delay: 3000,
                     disableOnInteraction: false,
@@ -43,7 +40,7 @@ export default function HeroSliderSection() {
             
                 {slides.map(slide => (
                     <SwiperSlide key={slide.id}>
-                        <div className="relative w-screen h-screen">
+                        <div className="relative w-screen h-[93.2vh]">
                             <Image
                                 className="absolute inset-0 z-[-1]"
                                 src={slide.image}
@@ -52,10 +49,15 @@ export default function HeroSliderSection() {
                                 height={300}
                                 style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center bottom' }}
                             />
-                            <div className="flex flex-col items-center justify-center h-2/4 gap-y-1">
-                                <h3 className="font-bebasNeue text-xl text-center opacity-70" style={{ color: slide.title.color }}>{slide.subtitle}</h3>
-                                <h2 className="font-bebasNeue text-8xl text-center font-black" style={{ color: slide.title.color }}>{slide.title.content}</h2>
-                                <Button content="Découvrir" link={slide.link} />
+                            <div className="flex flex-col items-center justify-center h-1/2">
+                                <HeadingButton
+                                    title={slide.title.content}
+                                    titleSize={100}
+                                    titleColor={slide.title.color}
+                                    subtitle={slide.subtitle}
+                                    button="Découvrir"
+                                    link={slide.link}
+                                />
                             </div>
                         </div>
                     </SwiperSlide>
