@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+const mongoose = require("mongoose");
 
 const connectDB = async () => {
   try {
     await mongoose.connect(
-      'mongodb+srv://<username>:<password>@cluster0.mongodb.net/mydatabase?retryWrites=true&w=majority',
+      'mongodb+srv://<am_marcos>:4FFBqvvWWliuVS07@cluster0.mongodb.net/mydatabase?retryWrites=true&w=majority',
     );
     console.log('MongoDB connected');
   } catch (err) {
@@ -12,4 +12,4 @@ const connectDB = async () => {
   }
 };
 
-export default connectDB;
+module.exports = connectDB;
