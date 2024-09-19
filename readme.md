@@ -1,37 +1,57 @@
-# Project Readme
+# E-Commerce Project
 
-This readme file provides an overview of the Node.js and MongoDB project, which is set up to run using Docker Compose.
+This repository contains a complete E-Commerce application built using **Node.js**, **Next.js**, and **MongoDB**, orchestrated with Docker Compose.
+
+## Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+You have installed Docker and Docker Compose.
 
 ## Getting Started
 
 To get started with the project, follow these steps:
 
-1. Clone the repository to your local machine.
-2. Install Docker and Docker Compose if you haven't already.
-3. Open a terminal and navigate to the project directory.
-4. Run the following command to start the project:
+Clone this repository to your local machine
 
-   ```
-   docker-compose up -d
-   ```
+Navigate to the project directory
 
-   This command will start Next.js, the Node.js server and MongoDB database containers in the background.
+## Installation
 
-## Project Structure
+Using Docker Compose
+Start all containers (Next.js, Node.js server, and MongoDB database):
 
-### Frontend folder
+`docker-compose up -d`
 
-The project follows a standard Next.js project structure.
+Verify that the containers are running:
 
-### Backend folder
-
-The project follows a standard Node.js project structure. Here are the main directories and files:
+` docker-compose ps`
 
 ## Usage
 
-Once the project is up and running, you can access the Node.js application at `http://localhost:3001`. The MongoDB database will be available at `mongodb://localhost:27017`.
-You can access the Next.js application at `http://localhost:3000`.
+Once the project is up and running, you can access the applications as follows:
 
-## License
+Node.js API:
+`http://localhost:3001`
 
-This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more information.
+Next.js Application:
+`http://localhost:3000`
+
+MongoDB:
+`mongodb://localhost:27017`
+
+## Documentation
+
+**Swagger API** Documentation
+The API documentation is available and interactive thanks to Swagger. You can access it at:
+
+`http://localhost:3001/api-docs`
+
+## Running Tests
+
+The project includes a suite of tests to ensure its correctness. To run the tests, execute:
+
+```
+cd ecommerce-app/node
+npm run test
+```
