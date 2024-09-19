@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getAllOptions, createOption } from '../services/optionsServices';
+import { getAllOptions, createOption } from '../services/optionServices';
 
 export const getOptions = async (req: Request, res: Response) => {
   try {

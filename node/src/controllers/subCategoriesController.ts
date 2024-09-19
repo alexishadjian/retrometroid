@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import {
   getAllSubcategories,
   createSubcategory,
-} from '../services/subcategoriesServices';
+} from '../services/subCategoriesServices';
 
 export const getSubcategories = async (req: Request, res: Response) => {
   try {
