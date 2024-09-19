@@ -4,7 +4,7 @@ import mongoose, { Document, Schema, Model } from 'mongoose';
 interface ISubcategory extends Document {
   color_name: string;
   color_hexadecimal: string;
-  option_subcategory_id: mongoose.Types.ObjectId[];
+  option_id: mongoose.Types.ObjectId; // ID of the option the subcategory belongs to
 }
 
 /**
@@ -16,7 +16,7 @@ interface ISubcategory extends Document {
  *       required:
  *         - color_name
  *         - color_hexadecimal
- *         - option_subcategory_id
+ *         - option_id
  *       properties:
  *         color_name:
  *           type: string
@@ -24,17 +24,16 @@ interface ISubcategory extends Document {
  *         color_hexadecimal:
  *           type: string
  *           description: Hexadecimal code of the color
- *         option_subcategory_id:
- *           type: array
- *           items:
- *             type: string
- *           description: Array of option IDs that belong to this subcategory
+ *         option_id:
+ *           type: string
+ *           description: ID of the option the subcategory belongs to
  */
 const SubcategorySchema: Schema = new Schema({
   color_name: { type: String, required: true },
   color_hexadecimal: { type: String, required: true },
-  option_subcategory_id: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Options' }],
+  option_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Options',
     required: true,
   },
 });

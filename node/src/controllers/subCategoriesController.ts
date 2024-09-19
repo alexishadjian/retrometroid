@@ -24,7 +24,7 @@ export const getSubcategories = async (req: Request, res: Response) => {
 };
 
 /**
- * Create a new subcategory
+ * Create a new subcategory and add it to an option
  * @param req Express request object
  * @param res Express response object
  */
@@ -32,7 +32,7 @@ export const createNewSubcategory = async (req: Request, res: Response) => {
   try {
     console.log('Creating a new subcategory with data:', req.body);
     const newSubcategory = await createSubcategory(req.body);
-    console.log('New subcategory created:', newSubcategory);
+    console.log('New subcategory created and added to option:', newSubcategory);
     res.status(201).json(newSubcategory);
   } catch (err: any) {
     console.error('Error creating subcategory:', err.message);
