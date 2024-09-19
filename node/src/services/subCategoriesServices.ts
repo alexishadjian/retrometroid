@@ -1,4 +1,4 @@
-import Subcategories from '../models/Subcategories';
+import Subcategories from '../models/subCategories';
 
 export const getAllSubcategories = async () => {
   return await Subcategories.find();

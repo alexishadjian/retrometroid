@@ -1,5 +1,5 @@
 import express from 'express';
-import { getOptions, createNewOption } from '../controllers/OptionsController';
+import { getOptions, createNewOption } from '../controllers/optionsController';
 
 const optionRoutes = express.Router();
 

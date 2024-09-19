@@ -2,7 +2,7 @@ import express from 'express';
 import {
   getSubcategories,
   createNewSubcategory,
-} from '../controllers/SubcategoriesController';
+} from '../controllers/subCategoriesController';
 
 const subcategoryRoutes = express.Router();
 

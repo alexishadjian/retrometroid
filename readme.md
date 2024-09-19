@@ -35,3 +35,15 @@ You can access the Next.js application at `http://localhost:3000`.
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more information.
+
+Pour lancer le projet dans node faire :
+
+```
+npx tsc
+```
+
+puis
+
+```
+npm start
+```

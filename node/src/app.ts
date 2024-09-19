@@ -1,10 +1,10 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-import optionRoutes from './routes/OptionsRouter';
-import productRoutes from './routes/ProductsRouter';
-import subcategoryRoutes from './routes/SubcategoriesRouter';
-import connectDB from './database/Connection';
+import connectDB from './database/connection';
+import productRoutes from './routes/productRouter';
+import optionRoutes from './routes/optionRouter';
+import subcategoryRoutes from './routes/subCategoriesRouter';
 
 dotenv.config();
 
@@ -21,6 +21,10 @@ app.use(bodyParser.json());
 app.use('/api/products', productRoutes);
 app.use('/api/options', optionRoutes);
 app.use('/api/subcategories', subcategoryRoutes);
+
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
 
 // Démarrer le serveur
 app.listen(PORT, () => {

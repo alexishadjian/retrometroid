@@ -1,4 +1,4 @@
-import Products from '../models/Products';
+import Products from '../models/products';
 
 export const getAllProducts = async () => {
   return await Products.find().populate('option_id');
