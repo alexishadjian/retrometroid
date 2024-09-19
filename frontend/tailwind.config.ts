@@ -6,6 +6,17 @@ const config: Config = {
     './_components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: [
+    'text-[40px]',
+    'text-[45px]',
+    'text-[55px]',
+    'text-[60px]',
+    'text-[70px]',
+    'md:text-[60px]',
+    'md:text-[80px]',
+    'md:text-[90px]',
+    'md:text-[100px]',
+  ],
   theme: {
     extend: {
       colors: {
@@ -15,7 +26,7 @@ const config: Config = {
       fontFamily: {
         roboto: ["var(--font-roboto)"],
         bebasNeue: ["var(--font-bebasNeue)"],
-      }
+      },
     },
   },
   plugins: [],
