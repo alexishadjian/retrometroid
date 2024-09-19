@@ -1,8 +1,8 @@
 import express from 'express';
-import connectDB from './config/db';
-import produitRoutes from './routes/produit';
-import optionRoutes from './routes/option';
-import sousOptionRoutes from './routes/sousOption';
+import connectDB from './src/database/Connection';
+import produitRoutes from './src/routes/ProductsRouter';
+import optionRoutes from './src/routes/OptionsRouter';
+import sousOptionRoutes from './src/routes/SubcategoriesRouter';
 
 const app = express();
 
