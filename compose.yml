@@ -8,19 +8,16 @@ services:
       - '3000:3000'
     volumes:
       - './frontend:/home/node/app'
-      # - /home/node/app/node_modules
 
   backend:
     container_name: backend
     image: node:22-slim
     working_dir: /home/node/app
     command: /bin/sh -c 'npm config set strict-ssl false && npm install && node --loader ts-node/esm server.ts'
-    command: /bin/sh -c 'npm config set strict-ssl false && npm install && node server.ts'
     ports:
       - '3001:3001'
     volumes:
       - './backend:/home/node/app'
-      # - /home/node/app/node_modules
     environment:
       - MONGO_URI=mongodb://mongo:27017/mydatabase
 
