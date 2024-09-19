@@ -40,8 +40,6 @@ import {
 } from '@/public/images/gba_front';
 import PriceSection from './price_section';
 
-// Définir les types pour les parties et les couleurs spécifiques
-type PartType = 'GBA_BUTTON' | 'GBA_PAD' | 'GBA_SHELL' | 'GBA_IPS';
 type PADColorType =
   | '#000000'
   | '#0000FF'
@@ -77,6 +75,25 @@ type SHELLColorType =
   | '#00FF00'
   | '#FFFF00';
 type IPSColorType = '#000000' | '#B22222';
+
+const colorNames: Record<string, string> = {
+  '#000000': 'black',
+  '#0000FF': 'blue',
+  '#FFFFFF': 'white',
+  '#00FF00': 'green',
+  '#FF0000': 'red',
+  '#FFC0CB': 'pink',
+  '#800080': 'purple',
+  '#FFFF00': 'yellow',
+  '#A9A9A9': 'dark grey',
+  '#ADD8E6': 'light blue',
+  '#00FF7F': 'spring green',
+  '#FFA500': 'orange',
+  '#B22222': 'fire brick',
+  '#808080': 'grey',
+  '#FFA07A': 'light salmon',
+  '#708090': 'slate grey',
+};
 
 const colorPrices: Record<string, Record<string, number>> = {
   GBA_PAD: {
@@ -122,13 +139,7 @@ const colorPrices: Record<string, Record<string, number>> = {
   },
 };
 
-// Typing des options de configuration
-const options: {
-  name: string;
-  description: string;
-  colors: (PADColorType | BUTTONColorType | SHELLColorType | IPSColorType)[];
-  part: PartType;
-}[] = [
+[
   {
     name: 'PADS',
     description: 'Couleur des PADS',
@@ -189,7 +200,6 @@ const options: {
   },
 ];
 
-// Définitions spécifiques pour les couleurs et les images
 const PAD_COLORS: Record<PADColorType, StaticImageData> = {
   '#000000': GBA_PAD_BLACK,
   '#0000FF': GBA_PAD_BLUE,
@@ -281,7 +291,6 @@ export default function Configurator() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
-      {/* Left section with phone & reload button */}
       <div className="flex flex-col items-center">
         <div className="flex justify-start w-full">
           <RefreshCcw size={32} color="#BEBFC5" className="mb-4" />
@@ -329,7 +338,6 @@ export default function Configurator() {
         </div>
       </div>
 
-      {/* Right section with options list & color picker */}
       <div className="flex flex-col justify-between">
         <h2 className="uppercase text-3xl font-roboto p-4">Configuration</h2>
 
@@ -398,7 +406,13 @@ export default function Configurator() {
         <div className="flex justify-center mt-6">
           <ChevronDown />
         </div>
-        <PriceSection totalPrice={totalPrice} />
+        <PriceSection
+          totalPrice={totalPrice}
+          selectedPadColor={colorNames[selectedPadColor]}
+          selectedButtonColor={colorNames[selectedButtonColor]}
+          selectedShellColor={colorNames[selectedShellColor]}
+          selectedIpsColor={colorNames[selectedIpsColor]}
+        />
       </div>
     </div>
   );
