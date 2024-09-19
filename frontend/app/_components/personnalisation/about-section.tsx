@@ -62,7 +62,7 @@ export default function AboutSection() {
   ];
 
   return (
-    <div className="m-4 p-4 border rounded-xl border-gray-50 shadow-lg">
+    <div className="md:mx-20 m-4 p-4 border rounded-xl border-gray-50 shadow-lg">
       {/* Titles et Paragraphs */}
       <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 md:justify-between md:flex-wrap">
         {titles.map((title) => (
