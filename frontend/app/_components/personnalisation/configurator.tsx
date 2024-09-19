@@ -1,6 +1,6 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import { RefreshCcw, ChevronDown, ChevronUp, ChevronRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { RefreshCcw, ChevronDown, ChevronRight } from 'lucide-react';
 import Image, { StaticImageData } from 'next/image';
 import {
   GBA_USBC,
@@ -29,17 +29,13 @@ import {
   GBA_PAD_YELLOW,
   GBA_SHELL_BLACK,
   GBA_SHELL_BLUE,
-  GBA_SHELL_CLEARBLACK,
   GBA_SHELL_CLEARBLUE,
-  GBA_SHELL_CLEARBLUEOCEAN,
   GBA_SHELL_CLEARGLASS,
   GBA_SHELL_CLEARORANGE,
   GBA_SHELL_CLEARRED,
   GBA_SHELL_DMG,
   GBA_SHELL_GHOST,
   GBA_SHELL_GREEN,
-  GBA_SHELL_RED,
-  GBA_SHELL_WHITE,
   GBA_SHELL_YELLOW,
 } from '@/public/images/gba_front';
 
@@ -212,19 +208,6 @@ export default function Configurator() {
     useState<IPSColorType>('#000000');
 
   const [openSection, setOpenSection] = useState<number | null>(null);
-
-  // Utilisation d'un effet pour loguer l'état sélectionné
-  useEffect(() => {
-    console.log('Selected Pad Color:', selectedPadColor);
-    console.log('Selected Button Color:', selectedButtonColor);
-    console.log('Selected Shell Color:', selectedShellColor);
-    console.log('Selected Ips Color:', selectedIpsColor);
-  }, [
-    selectedPadColor,
-    selectedButtonColor,
-    selectedShellColor,
-    selectedIpsColor,
-  ]);
 
   const toggleSection = (index: number) => {
     setOpenSection(openSection === index ? null : index);
