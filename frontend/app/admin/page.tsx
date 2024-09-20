@@ -100,7 +100,7 @@ export default function Home() {
                         <p className="w-1/6">{product.price_initial}€</p>
                         <div className="w-1/6 flex gap-1">
                             {product.option_id.map((cat) => {
-                                if (cat.option_type === 'Pads') {
+                                if (cat.option_type === 'Pads' || cat.option_type === 'pads' || cat.option_type === 'PADS') {
                                     return cat.sub_categories.map((sub) => (
                                         <div key={sub.id} className="rounded-full w-[20px] aspect-square" style={{backgroundColor: sub.color_hexadecimal }}></div>
                                     ));
@@ -110,7 +110,7 @@ export default function Home() {
                         </div>
                         <div className="w-1/6 flex gap-1">
                             {product.option_id.map((cat) => {
-                                if (cat.option_type === 'Button') {
+                                if (cat.option_type === 'Button' || cat.option_type === 'button' || cat.option_type === 'BUTTON') {
                                     return cat.sub_categories.map((sub) => (
                                         <div key={sub.id} className="rounded-full w-[20px] aspect-square" style={{backgroundColor: sub.color_hexadecimal }}></div>
                                     ));
@@ -120,7 +120,7 @@ export default function Home() {
                         </div>
                         <div className="w-1/6 flex gap-1">
                             {product.option_id.map((cat) => {
-                                if (cat.option_type === 'Shells') {
+                                if (cat.option_type === 'Shells' || cat.option_type === 'shells' || cat.option_type === 'SHELLS') {
                                     return cat.sub_categories.map((sub) => (
                                         <div key={sub.id} className="rounded-full w-[20px] aspect-square" style={{backgroundColor: sub.color_hexadecimal }}></div>
                                     ));
@@ -130,7 +130,7 @@ export default function Home() {
                         </div>
                         <div className="w-1/6 flex gap-1">
                             {product.option_id.map((cat) => {
-                                if (cat.option_type === 'Ips') {
+                                if (cat.option_type === 'Ips' || cat.option_type === 'ips' || cat.option_type === 'IPS') {
                                     return cat.sub_categories.map((sub) => (
                                         <div key={sub.id} className="rounded-full w-[20px] aspect-square" style={{backgroundColor: sub.color_hexadecimal }}></div>
                                     ));
