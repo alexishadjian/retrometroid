@@ -1,6 +1,6 @@
 import Options from '../models/options';
 import Products from '../models/products';
-import Subcategories from '../models/subCategories';
+import { ISubcategory } from '../models/subCategories';
 
 /**
  * Get all options from the database.
@@ -9,7 +9,8 @@ import Subcategories from '../models/subCategories';
 export const getAllOptions = async () => {
   try {
     console.log('Fetching all options from the database...');
-    const options = await Options.find();
+    // Populate 'sub_categories' to get the entire sub-category objects
+    const options = await Options.find().populate('sub_categories');
     console.log('Options fetched:', options);
     return options;
   } catch (err: any) {
@@ -79,11 +80,42 @@ export const updateOption = async (id: string, updateData: any) => {
     console.log(`Updating option with ID: ${id}`);
     const updatedOption = await Options.findByIdAndUpdate(id, updateData, {
       new: true,
-    });
+    }).populate('sub_categories');
     console.log(`Option with ID: ${id} updated successfully`);
     return updatedOption;
   } catch (err: any) {
     console.error(`Error updating option with ID: ${id}`, err.message);
     throw new Error(`An error occurred while updating the option.`);
+  }
+};
+
+/**
+ * Add a sub-category to an option with the full details of the sub-category.
+ * @param {string} optionId - The ID of the option to update.
+ * @param {ISubcategory} subCategory - The sub-category object to add.
+ * @returns {Promise<Object>} The updated option with the new sub-category.
+ */
+export const addSubCategoryToOption = async (
+  optionId: string,
+  subCategory: ISubcategory,
+) => {
+  try {
+    const updatedOption = await Options.findByIdAndUpdate(
+      optionId,
+      {
+        $push: { sub_categories: subCategory },
+      },
+      { new: true },
+    ).populate('sub_categories');
+    console.log(`Updated option with new sub-category: ${updatedOption}`);
+    return updatedOption;
+  } catch (err: any) {
+    console.error(
+      `Error adding sub-category to option with ID: ${optionId}`,
+      err.message,
+    );
+    throw new Error(
+      `An error occurred while adding the sub-category to the option.`,
+    );
   }
 };

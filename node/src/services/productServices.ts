@@ -6,7 +6,13 @@ import Products from '../models/products';
  */
 export const getAllProducts = async () => {
   try {
-    const products = await Products.find().populate('option_id');
+    const products = await Products.find().populate({
+      path: 'option_id',
+      populate: {
+        path: 'sub_categories',
+        model: 'Subcategories',
+      },
+    });
     return products;
   } catch (err: any) {
     throw new Error('An error occurred while fetching products.');
@@ -35,7 +41,13 @@ export const createProduct = async (productData: any) => {
  */
 export const getProductById = async (id: string) => {
   try {
-    const product = await Products.findById(id).populate('option_id');
+    const product = await Products.findById(id).populate({
+      path: 'option_id',
+      populate: {
+        path: 'sub_categories',
+        model: 'Subcategories',
+      },
+    });
     return product;
   } catch (err: any) {
     throw new Error(
@@ -67,6 +79,12 @@ export const updateProduct = async (id: string, updateData: any) => {
   try {
     const updatedProduct = await Products.findByIdAndUpdate(id, updateData, {
       new: true,
+    }).populate({
+      path: 'option_id',
+      populate: {
+        path: 'sub_categories',
+        model: 'Subcategories',
+      },
     });
     return updatedProduct;
   } catch (err: any) {

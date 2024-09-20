@@ -43,3 +43,4 @@ const Subcategories: Model<ISubcategory> = mongoose.model<ISubcategory>(
   SubcategorySchema,
 );
 export default Subcategories;
+export { ISubcategory };

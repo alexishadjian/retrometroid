@@ -13,6 +13,16 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const cors = require('cors');
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+const corsOptions = {
+  origin: isProduction ? process.env.URL_PROD : process.env.URL_DEV,
+};
+
+app.use(cors(corsOptions));
+
 // Connexion à MongoDB
 connectDB();
 
