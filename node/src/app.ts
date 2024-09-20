@@ -17,7 +17,8 @@ const PORT = process.env.PORT || 3001;
 const isProduction = process.env.NODE_ENV === 'production';
 
 const corsOptions = {
-  origin: isProduction ? process.env.URL_FRONT_PROD : process.env.URL_FRONT_DEV,
+  origin: isProduction ? process.env.URL_PROD : process.env.URL_DEV,
+  credentials: true,
 };
 
 console.log(`CORS Origin: ${corsOptions.origin}`);
