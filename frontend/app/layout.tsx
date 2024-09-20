@@ -44,7 +44,9 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
         <html lang="en">
             <body className={`${roboto.className} ${roboto.variable} ${bebasNeue.variable} antialiased`} >
                 <Header />
-                {children}
+                <main>
+                    {children}
+                </main>
                 <Footer />
             </body>
         </html>
