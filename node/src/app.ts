@@ -18,7 +18,7 @@ const cors = require('cors');
 const isProduction = process.env.NODE_ENV === 'production';
 
 const corsOptions = {
-  origin: isProduction ? process.env.URL_PROD : process.env.URL_DEV,
+  origin: isProduction ? process.env.URL_FRONT_PROD : process.env.URL_FRONT_DEV,
 };
 
 app.use(cors(corsOptions));

@@ -25,6 +25,10 @@ body {
   background-color: rgb(247, 247, 247);
 }
 
+main {
+  flex-grow: 1;
+}
+
 .wrapper {
   padding-left: 16px;
   padding-right: 16px;

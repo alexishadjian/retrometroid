@@ -17,7 +17,7 @@ export default function Header() {
   return (
     <header className="bg-[--white] fixed left-0 top-0 right-0 shadow-md z-50">
       <div className="flex justify-between items-center wrapper-small">
-        <Link href="/" className="logo order-1 md:order-none">
+        <Link href="/" className="logo order-1 md:order-none py-4">
           <Image src={Logo} alt="Logo" width={120} height={20} sizes="100%" />
         </Link>
 
