@@ -18,7 +18,7 @@ export default function PriceSection({
 }: PriceSectionProps) {
   const addToCart = async () => {
     const productData = {
-      name: 'GB console - Mathis',
+      name: 'GB console - Mathis - backendtest',
       type: 'simple',
       regular_price: totalPrice.toString(),
       description: `Console GB avec ces options :
@@ -27,7 +27,7 @@ export default function PriceSection({
         - Couleur du boitier: ${selectedShellColor}
         - Couleur de l'écran: ${selectedIpsColor}`,
       short_description: 'Console GB personnalisée',
-      categories: [{ id: 1 }],
+      categories: [{ id: 1 }], // Mettez le bon ID de catégorie pour votre produit
     };
 
     console.log('Product data to be sent:', productData);
@@ -49,12 +49,14 @@ export default function PriceSection({
       );
 
       console.log('Produit ajouté au catalogue:', response.data);
+      alert('Produit ajouté au catalogue avec succès !');
     } catch (error) {
       console.error(
         "Erreur lors de l'ajout au catalogue:",
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (error as any).response ? (error as any).response.data : error,
       );
+      alert("Erreur lors de l'ajout au catalogue. Veuillez réessayer.");
     }
   };
 

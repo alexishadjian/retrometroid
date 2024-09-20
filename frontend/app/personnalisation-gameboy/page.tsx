@@ -5,7 +5,7 @@ import ProductHeader from '../_components/personnalisation/product-header';
 import StickersSection from '../_components/personnalisation/stickers-section';
 import SubHeader from '../_components/sub-header';
 
-const productId = '66ed2985ad4254fb088ebd37'; // ID du produit
+const productId = '66ed3aec4efc2724b6ae419f'; // ID du produit
 
 export default function PersonnalisationGameboyPage() {
   return (

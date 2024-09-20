@@ -5,43 +5,6 @@ import { RefreshCcw, ChevronDown, ChevronRight } from 'lucide-react';
 import Image, { StaticImageData } from 'next/image';
 import PriceSection from './price_section';
 
-import {
-  GBA_USBC,
-  GBA_BUTTON_BLACK,
-  GBA_BUTTON_BLUE,
-  GBA_BUTTON_CLEARBLACK,
-  GBA_BUTTON_CLEARBLUE,
-  GBA_BUTTON_CLEARGRASS,
-  GBA_BUTTON_CLEARGREEN,
-  GBA_BUTTON_CLEARORANGE,
-  GBA_BUTTON_DMG,
-  GBA_BUTTON_GREY,
-  GBA_BUTTON_ORANGE,
-  GBA_BUTTON_RED,
-  GBA_BUTTON_ROSE,
-  GBA_BUTTON_WHITE,
-  GBA_IPS_BLACK,
-  GBA_IPS_DMG,
-  GBA_PAD_BLACK,
-  GBA_PAD_BLUE,
-  GBA_PAD_CLEAR,
-  GBA_PAD_GREEN,
-  GBA_PAD_RED,
-  GBA_PAD_ROSE,
-  GBA_PAD_VIOLET,
-  GBA_PAD_YELLOW,
-  GBA_SHELL_BLACK,
-  GBA_SHELL_BLUE,
-  GBA_SHELL_CLEARBLUE,
-  GBA_SHELL_CLEARGLASS,
-  GBA_SHELL_CLEARORANGE,
-  GBA_SHELL_CLEARRED,
-  GBA_SHELL_DMG,
-  GBA_SHELL_GHOST,
-  GBA_SHELL_GREEN,
-  GBA_SHELL_YELLOW,
-} from '@/public/images/gba_front';
-
 type Product = {
   _id: string;
   name: string;
@@ -105,49 +68,19 @@ const colorPrices: Record<string, Record<string, number>> = {
   },
 };
 
-const PAD_COLORS: Record<string, StaticImageData> = {
-  '#000000': GBA_PAD_BLACK,
-  '#0000FF': GBA_PAD_BLUE,
-  '#FFFFFF': GBA_PAD_CLEAR,
-  '#00FF00': GBA_PAD_GREEN,
-  '#FF0000': GBA_PAD_RED,
-  '#FFC0CB': GBA_PAD_ROSE,
-  '#800080': GBA_PAD_VIOLET,
-  '#FFFF00': GBA_PAD_YELLOW,
-};
-
-const BUTTON_COLORS: Record<string, StaticImageData> = {
-  '#000000': GBA_BUTTON_BLACK,
-  '#0000FF': GBA_BUTTON_BLUE,
-  '#A9A9A9': GBA_BUTTON_CLEARBLACK,
-  '#ADD8E6': GBA_BUTTON_CLEARBLUE,
-  '#00FF7F': GBA_BUTTON_CLEARGRASS,
-  '#00FF00': GBA_BUTTON_CLEARGREEN,
-  '#FFA500': GBA_BUTTON_CLEARORANGE,
-  '#B22222': GBA_BUTTON_DMG,
-  '#808080': GBA_BUTTON_GREY,
-  '#FFA07A': GBA_BUTTON_ORANGE,
-  '#FF0000': GBA_BUTTON_RED,
-  '#FFC0CB': GBA_BUTTON_ROSE,
-  '#FFFFFF': GBA_BUTTON_WHITE,
-};
-
-const SHELL_COLORS: Record<string, StaticImageData> = {
-  '#000000': GBA_SHELL_BLACK,
-  '#0000FF': GBA_SHELL_BLUE,
-  '#ADD8E6': GBA_SHELL_CLEARBLUE,
-  '#FFFFFF': GBA_SHELL_CLEARGLASS,
-  '#FFA500': GBA_SHELL_CLEARORANGE,
-  '#FF0000': GBA_SHELL_CLEARRED,
-  '#B22222': GBA_SHELL_DMG,
-  '#708090': GBA_SHELL_GHOST,
-  '#00FF00': GBA_SHELL_GREEN,
-  '#FFFF00': GBA_SHELL_YELLOW,
-};
-
-const IPS_COLORS: Record<string, StaticImageData> = {
-  '#000000': GBA_IPS_BLACK,
-  '#B22222': GBA_IPS_DMG,
+const importImage = async (option: string, color: string) => {
+  try {
+    const image = await import(
+      `@/public/images/gba_front/GBA_${option}_${color}.webp`
+    );
+    return image.default;
+  } catch (error) {
+    console.error(
+      `Error importing image for option: ${option}, color: ${color}`,
+      error,
+    );
+    throw error;
+  }
 };
 
 export default function Configurator({ productId }: { productId: string }) {
@@ -160,6 +93,19 @@ export default function Configurator({ productId }: { productId: string }) {
     useState<string>('#000000');
   const [selectedIpsColor, setSelectedIpsColor] = useState<string>('#000000');
 
+  const [padImage, setPadImage] = useState<string | StaticImageData | null>(
+    null,
+  );
+  const [buttonImage, setButtonImage] = useState<
+    string | StaticImageData | null
+  >(null);
+  const [shellImage, setShellImage] = useState<string | StaticImageData | null>(
+    null,
+  );
+  const [ipsImage, setIpsImage] = useState<string | StaticImageData | null>(
+    null,
+  );
+
   const [totalPrice, setTotalPrice] = useState(basePrice);
   const [openSection, setOpenSection] = useState<number | null>(null);
   const [productData, setProductData] = useState<Product | null>(null);
@@ -168,13 +114,15 @@ export default function Configurator({ productId }: { productId: string }) {
 
   useEffect(() => {
     const fetchProduct = async (id: string) => {
+      console.log(`Fetching product with ID: ${id}`);
       try {
         const { data } = await axios.get(
           `http://localhost:3001/api/products/${id}`,
         );
+        console.log('Product data fetched:', data);
         setProductData(data);
       } catch (err) {
-        console.error(err);
+        console.error('Error fetching product:', err);
         setError(err as Error);
       } finally {
         setLoading(false);
@@ -186,12 +134,14 @@ export default function Configurator({ productId }: { productId: string }) {
 
   useEffect(() => {
     const calculateTotalPrice = () => {
+      console.log('Calculating total price');
       let price = basePrice;
       price += colorPrices.GBA_PAD[selectedPadColor] || 0;
       price += colorPrices.GBA_BUTTON[selectedButtonColor] || 0;
       price += colorPrices.GBA_SHELL[selectedShellColor] || 0;
       price += colorPrices.GBA_IPS[selectedIpsColor] || 0;
       setTotalPrice(price);
+      console.log('Total price calculated:', price);
     };
 
     calculateTotalPrice();
@@ -202,19 +152,38 @@ export default function Configurator({ productId }: { productId: string }) {
     selectedIpsColor,
   ]);
 
+  const handleColorChange = async (optionType: string, color: string) => {
+    console.log(`Changing ${optionType} color to ${color}`);
+    const option = optionType.toUpperCase();
+    const colorName = color.toUpperCase();
+
+    try {
+      const image = await importImage(option, colorName);
+      if (optionType === 'PAD') setPadImage(image);
+      if (optionType === 'BUTTON') setButtonImage(image);
+      if (optionType === 'SHELL') setShellImage(image);
+      if (optionType === 'IPS') setIpsImage(image);
+    } catch (error) {
+      console.error('Error setting image:', error);
+    }
+  };
+
   const toggleSection = (index: number) => {
     setOpenSection(openSection === index ? null : index);
   };
 
   if (loading) {
+    console.log('Loading product data...');
     return <p>Loading...</p>;
   }
 
   if (error) {
+    console.error('Error:', error);
     return <p>Error loading product: {error.message}</p>;
   }
 
   if (!productData) {
+    console.log('No product data found.');
     return <p>Product not found.</p>;
   }
 
@@ -225,45 +194,46 @@ export default function Configurator({ productId }: { productId: string }) {
           <RefreshCcw size={32} color="#BEBFC5" className="mb-4" />
         </div>
         <div className="relative w-full h-96">
-          <Image
-            src={GBA_USBC}
-            alt="USB-C"
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            objectFit="contain"
-          />
-          <Image
-            src={PAD_COLORS[selectedPadColor]}
-            alt="Pad Color"
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            objectFit="contain"
-            className="absolute z-20"
-          />
-          <Image
-            src={BUTTON_COLORS[selectedButtonColor]}
-            alt="Button Color"
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            objectFit="contain"
-            className="absolute z-20"
-          />
-          <Image
-            src={SHELL_COLORS[selectedShellColor]}
-            alt="Shell Color"
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            objectFit="contain"
-            className="absolute z-10"
-          />
-          <Image
-            src={IPS_COLORS[selectedIpsColor]}
-            alt="IPS Color"
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            objectFit="contain"
-            className="absolute z-20"
-          />
+          {padImage && (
+            <Image
+              src={padImage}
+              alt="Pad Color"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              objectFit="contain"
+              className="absolute z-20"
+            />
+          )}
+          {buttonImage && (
+            <Image
+              src={buttonImage}
+              alt="Button Color"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              objectFit="contain"
+              className="absolute z-20"
+            />
+          )}
+          {shellImage && (
+            <Image
+              src={shellImage}
+              alt="Shell Color"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              objectFit="contain"
+              className="absolute z-10"
+            />
+          )}
+          {ipsImage && (
+            <Image
+              src={ipsImage}
+              alt="IPS Color"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              objectFit="contain"
+              className="absolute z-20"
+            />
+          )}
         </div>
       </div>
 
@@ -294,11 +264,11 @@ export default function Configurator({ productId }: { productId: string }) {
                   className="w-6 h-6 mr-2 rounded-full"
                   style={{
                     backgroundColor:
-                      option.option_type === 'GBA_PAD'
+                      option.option_type === 'PAD'
                         ? selectedPadColor
-                        : option.option_type === 'GBA_BUTTON'
+                        : option.option_type === 'BUTTON'
                         ? selectedButtonColor
-                        : option.option_type === 'GBA_SHELL'
+                        : option.option_type === 'SHELL'
                         ? selectedShellColor
                         : selectedIpsColor,
                   }}
@@ -317,16 +287,19 @@ export default function Configurator({ productId }: { productId: string }) {
                     style={{ backgroundColor: subCategory.color_hexadecimal }}
                     onClick={() => {
                       console.log(
-                        `Selected color for ${option.option_type}:`,
-                        subCategory.color_hexadecimal,
+                        `Selected color for ${option.option_type}: ${subCategory.color_hexadecimal}`,
                       );
-                      if (option.option_type === 'GBA_PAD')
+                      handleColorChange(
+                        option.option_type,
+                        subCategory.color_name,
+                      );
+                      if (option.option_type === 'PAD')
                         setSelectedPadColor(subCategory.color_hexadecimal);
-                      if (option.option_type === 'GBA_BUTTON')
+                      if (option.option_type === 'BUTTON')
                         setSelectedButtonColor(subCategory.color_hexadecimal);
-                      if (option.option_type === 'GBA_SHELL')
+                      if (option.option_type === 'SHELL')
                         setSelectedShellColor(subCategory.color_hexadecimal);
-                      if (option.option_type === 'GBA_IPS')
+                      if (option.option_type === 'IPS')
                         setSelectedIpsColor(subCategory.color_hexadecimal);
                     }}
                   ></div>
