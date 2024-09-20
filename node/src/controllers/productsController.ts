@@ -4,6 +4,7 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  getProductById as getProductByIdService,
 } from '../services/productServices';
 
 /**
@@ -77,5 +78,26 @@ export const updateProductById = async (req: Request, res: Response) => {
     res
       .status(500)
       .json({ message: 'An error occurred while updating the product.' });
+  }
+};
+
+/**
+ * Get a product by its ID
+ * @param req Express request object
+ * @param res Express response object
+ */
+export const getProductById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const product = await getProductByIdService(id);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.json(product);
+  } catch (err: any) {
+    console.error('Error fetching product:', err.message);
+    res
+      .status(500)
+      .json({ message: 'An error occurred while fetching the product.' });
   }
 };
