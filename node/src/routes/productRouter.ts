@@ -4,6 +4,7 @@ import {
   createNewProduct,
   updateProductById,
   deleteProductById,
+  getProductById,
 } from '../controllers/productsController';
 
 const router = express.Router();
@@ -108,5 +109,7 @@ router.delete('/:id', deleteProductById);
  *         description: Product not found
  */
 router.patch('/:id', updateProductById);
+
+router.get('/:id', getProductById);
 
 export default router;
