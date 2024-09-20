@@ -83,15 +83,22 @@ const importImage = async (option: string, color: string) => {
   }
 };
 
-export default function Configurator({ productId }: { productId: string }) {
-  const basePrice = 100;
+const defaultPadColor = 'BLACK';
+const defaultButtonColor = 'BLACK';
+const defaultShellColor = 'BLACK';
+const defaultIpsColor = 'BLACK';
 
-  const [selectedPadColor, setSelectedPadColor] = useState<string>('#000000');
+export default function Configurator({ productId }: { productId: string }) {
+  const basePrice = 100; // Prix de base de la console
+
+  const [selectedPadColor, setSelectedPadColor] =
+    useState<string>(defaultPadColor);
   const [selectedButtonColor, setSelectedButtonColor] =
-    useState<string>('#000000');
+    useState<string>(defaultButtonColor);
   const [selectedShellColor, setSelectedShellColor] =
-    useState<string>('#000000');
-  const [selectedIpsColor, setSelectedIpsColor] = useState<string>('#000000');
+    useState<string>(defaultShellColor);
+  const [selectedIpsColor, setSelectedIpsColor] =
+    useState<string>(defaultIpsColor);
 
   const [padImage, setPadImage] = useState<string | StaticImageData | null>(
     null,
@@ -131,6 +138,27 @@ export default function Configurator({ productId }: { productId: string }) {
 
     fetchProduct(productId);
   }, [productId]);
+
+  // Charger les images par défaut lors de l'initialisation
+  useEffect(() => {
+    const loadDefaultImages = async () => {
+      try {
+        const padImg = await importImage('PAD', defaultPadColor);
+        const buttonImg = await importImage('BUTTON', defaultButtonColor);
+        const shellImg = await importImage('SHELL', defaultShellColor);
+        const ipsImg = await importImage('IPS', defaultIpsColor);
+
+        setPadImage(padImg);
+        setButtonImage(buttonImg);
+        setShellImage(shellImg);
+        setIpsImage(ipsImg);
+      } catch (error) {
+        console.error('Error loading default images:', error);
+      }
+    };
+
+    loadDefaultImages();
+  }, []);
 
   useEffect(() => {
     const calculateTotalPrice = () => {
