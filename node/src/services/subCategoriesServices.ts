@@ -1,5 +1,6 @@
 import Subcategories from '../models/subCategories';
 import Options from '../models/options';
+import { addSubCategoryToOption } from './optionServices';
 
 /**
  * Get all subcategories from the database.
@@ -38,12 +39,8 @@ export const createSubcategory = async (subcategoryData: any) => {
 
     const savedSubcategory = await subcategory.save();
 
-    // Update the option to add the new subcategory
-    const updatedOption = await Options.findByIdAndUpdate(
-      option_id,
-      { $push: { sub_categories: savedSubcategory._id } },
-      { new: true },
-    );
+    // Ajouter les informations complètes de la sous-catégorie à l'option
+    await addSubCategoryToOption(option_id, savedSubcategory);
 
     console.log('New subcategory created:', savedSubcategory);
     return savedSubcategory;

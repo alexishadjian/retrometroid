@@ -1,7 +1,10 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { RefreshCcw, ChevronDown, ChevronRight } from 'lucide-react';
 import Image, { StaticImageData } from 'next/image';
+import PriceSection from './price_section';
+
 import {
   GBA_USBC,
   GBA_BUTTON_BLACK,
@@ -38,61 +41,24 @@ import {
   GBA_SHELL_GREEN,
   GBA_SHELL_YELLOW,
 } from '@/public/images/gba_front';
-import PriceSection from './price_section';
 
-type PADColorType =
-  | '#000000'
-  | '#0000FF'
-  | '#FFFFFF'
-  | '#00FF00'
-  | '#FF0000'
-  | '#FFC0CB'
-  | '#800080'
-  | '#FFFF00';
-type BUTTONColorType =
-  | '#000000'
-  | '#0000FF'
-  | '#A9A9A9'
-  | '#ADD8E6'
-  | '#00FF7F'
-  | '#00FF00'
-  | '#FFA500'
-  | '#B22222'
-  | '#808080'
-  | '#FFA07A'
-  | '#FF0000'
-  | '#FFC0CB'
-  | '#FFFFFF';
-type SHELLColorType =
-  | '#000000'
-  | '#0000FF'
-  | '#ADD8E6'
-  | '#FFFFFF'
-  | '#FFA500'
-  | '#FF0000'
-  | '#B22222'
-  | '#708090'
-  | '#00FF00'
-  | '#FFFF00';
-type IPSColorType = '#000000' | '#B22222';
+type Product = {
+  _id: string;
+  name: string;
+  option_id: Option[];
+};
 
-const colorNames: Record<string, string> = {
-  '#000000': 'black',
-  '#0000FF': 'blue',
-  '#FFFFFF': 'white',
-  '#00FF00': 'green',
-  '#FF0000': 'red',
-  '#FFC0CB': 'pink',
-  '#800080': 'purple',
-  '#FFFF00': 'yellow',
-  '#A9A9A9': 'dark grey',
-  '#ADD8E6': 'light blue',
-  '#00FF7F': 'spring green',
-  '#FFA500': 'orange',
-  '#B22222': 'fire brick',
-  '#808080': 'grey',
-  '#FFA07A': 'light salmon',
-  '#708090': 'slate grey',
+type Option = {
+  _id: string;
+  option_type: string;
+  option_description: string;
+  sub_categories: SubCategory[];
+};
+
+type SubCategory = {
+  _id: string;
+  color_name: string;
+  color_hexadecimal: string;
 };
 
 const colorPrices: Record<string, Record<string, number>> = {
@@ -139,68 +105,7 @@ const colorPrices: Record<string, Record<string, number>> = {
   },
 };
 
-[
-  {
-    name: 'PADS',
-    description: 'Couleur des PADS',
-    colors: [
-      '#000000',
-      '#0000FF',
-      '#FFFFFF',
-      '#00FF00',
-      '#FF0000',
-      '#FFC0CB',
-      '#800080',
-      '#FFFF00',
-    ] as PADColorType[],
-    part: 'GBA_PAD',
-  },
-  {
-    name: 'BUTTON',
-    description: 'Couleur des BUTTONS',
-    colors: [
-      '#000000',
-      '#0000FF',
-      '#A9A9A9',
-      '#ADD8E6',
-      '#00FF7F',
-      '#00FF00',
-      '#FFA500',
-      '#B22222',
-      '#808080',
-      '#FFA07A',
-      '#FF0000',
-      '#FFC0CB',
-      '#FFFFFF',
-    ] as BUTTONColorType[],
-    part: 'GBA_BUTTON',
-  },
-  {
-    name: 'SHELL',
-    description: 'Couleur du SHELL',
-    colors: [
-      '#000000',
-      '#0000FF',
-      '#ADD8E6',
-      '#FFFFFF',
-      '#FFA500',
-      '#FF0000',
-      '#B22222',
-      '#708090',
-      '#00FF00',
-      '#FFFF00',
-    ] as SHELLColorType[],
-    part: 'GBA_SHELL',
-  },
-  {
-    name: 'IPS',
-    description: "Couleur de l'écran IPS",
-    colors: ['#000000', '#B22222'] as IPSColorType[],
-    part: 'GBA_IPS',
-  },
-];
-
-const PAD_COLORS: Record<PADColorType, StaticImageData> = {
+const PAD_COLORS: Record<string, StaticImageData> = {
   '#000000': GBA_PAD_BLACK,
   '#0000FF': GBA_PAD_BLUE,
   '#FFFFFF': GBA_PAD_CLEAR,
@@ -211,7 +116,7 @@ const PAD_COLORS: Record<PADColorType, StaticImageData> = {
   '#FFFF00': GBA_PAD_YELLOW,
 };
 
-const BUTTON_COLORS: Record<BUTTONColorType, StaticImageData> = {
+const BUTTON_COLORS: Record<string, StaticImageData> = {
   '#000000': GBA_BUTTON_BLACK,
   '#0000FF': GBA_BUTTON_BLUE,
   '#A9A9A9': GBA_BUTTON_CLEARBLACK,
@@ -227,7 +132,7 @@ const BUTTON_COLORS: Record<BUTTONColorType, StaticImageData> = {
   '#FFFFFF': GBA_BUTTON_WHITE,
 };
 
-const SHELL_COLORS: Record<SHELLColorType, StaticImageData> = {
+const SHELL_COLORS: Record<string, StaticImageData> = {
   '#000000': GBA_SHELL_BLACK,
   '#0000FF': GBA_SHELL_BLUE,
   '#ADD8E6': GBA_SHELL_CLEARBLUE,
@@ -240,44 +145,52 @@ const SHELL_COLORS: Record<SHELLColorType, StaticImageData> = {
   '#FFFF00': GBA_SHELL_YELLOW,
 };
 
-const IPS_COLORS: Record<IPSColorType, StaticImageData> = {
+const IPS_COLORS: Record<string, StaticImageData> = {
   '#000000': GBA_IPS_BLACK,
   '#B22222': GBA_IPS_DMG,
 };
 
-const colorOptions = {
-  PADS: Object.keys(PAD_COLORS) as PADColorType[],
-  BUTTONS: Object.keys(BUTTON_COLORS) as BUTTONColorType[],
-  SHELLS: Object.keys(SHELL_COLORS) as SHELLColorType[],
-  IPS: Object.keys(IPS_COLORS) as IPSColorType[],
-};
-
-export default function Configurator() {
+export default function Configurator({ productId }: { productId: string }) {
   const basePrice = 100; // Prix de base de la console
 
-  const [selectedPadColor, setSelectedPadColor] =
-    useState<PADColorType>('#000000');
+  const [selectedPadColor, setSelectedPadColor] = useState<string>('#000000');
   const [selectedButtonColor, setSelectedButtonColor] =
-    useState<BUTTONColorType>('#000000');
+    useState<string>('#000000');
   const [selectedShellColor, setSelectedShellColor] =
-    useState<SHELLColorType>('#000000');
-  const [selectedIpsColor, setSelectedIpsColor] =
-    useState<IPSColorType>('#000000');
+    useState<string>('#000000');
+  const [selectedIpsColor, setSelectedIpsColor] = useState<string>('#000000');
 
   const [totalPrice, setTotalPrice] = useState(basePrice);
   const [openSection, setOpenSection] = useState<number | null>(null);
+  const [productData, setProductData] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
-  const toggleSection = (index: number) => {
-    setOpenSection(openSection === index ? null : index);
-  };
+  useEffect(() => {
+    const fetchProduct = async (id: string) => {
+      try {
+        const { data } = await axios.get(
+          `http://localhost:3001/api/products/${id}`,
+        );
+        setProductData(data);
+      } catch (err) {
+        console.error(err);
+        setError(err as Error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct(productId);
+  }, [productId]);
 
   useEffect(() => {
     const calculateTotalPrice = () => {
       let price = basePrice;
-      price += colorPrices.GBA_PAD[selectedPadColor];
-      price += colorPrices.GBA_BUTTON[selectedButtonColor];
-      price += colorPrices.GBA_SHELL[selectedShellColor];
-      price += colorPrices.GBA_IPS[selectedIpsColor];
+      price += colorPrices.GBA_PAD[selectedPadColor] || 0;
+      price += colorPrices.GBA_BUTTON[selectedButtonColor] || 0;
+      price += colorPrices.GBA_SHELL[selectedShellColor] || 0;
+      price += colorPrices.GBA_IPS[selectedIpsColor] || 0;
       setTotalPrice(price);
     };
 
@@ -288,6 +201,22 @@ export default function Configurator() {
     selectedShellColor,
     selectedIpsColor,
   ]);
+
+  const toggleSection = (index: number) => {
+    setOpenSection(openSection === index ? null : index);
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error loading product: {error.message}</p>;
+  }
+
+  if (!productData) {
+    return <p>Product not found.</p>;
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
@@ -339,9 +268,11 @@ export default function Configurator() {
       </div>
 
       <div className="flex flex-col justify-between">
-        <h2 className="uppercase text-3xl font-roboto p-4">Configuration</h2>
+        <h2 className="uppercase text-3xl font-roboto p-4">
+          Configuration: {productData.name}
+        </h2>
 
-        {['PADS', 'BUTTONS', 'SHELLS', 'IPS'].map((section, index) => (
+        {productData.option_id.map((option, index) => (
           <div key={index} className="mb-6">
             <button
               onClick={() => toggleSection(index)}
@@ -349,24 +280,25 @@ export default function Configurator() {
             >
               <div className="flex items-center">
                 <div className="flex flex-col">
-                  <span className="font-semibold text-lg">{section}</span>
+                  <span className="font-semibold text-lg">
+                    {option.option_type}
+                  </span>
                   <span className="font-light text-sm text-gray-400">
-                    Couleur des {section.toLowerCase()}
+                    {option.option_description}
                   </span>
                 </div>
               </div>
 
               <div className="flex justify-center items-center">
-                {/* Circle with selected color */}
                 <div
                   className="w-6 h-6 mr-2 rounded-full"
                   style={{
                     backgroundColor:
-                      section === 'PADS'
+                      option.option_type === 'GBA_PAD'
                         ? selectedPadColor
-                        : section === 'BUTTONS'
+                        : option.option_type === 'GBA_BUTTON'
                         ? selectedButtonColor
-                        : section === 'SHELLS'
+                        : option.option_type === 'GBA_SHELL'
                         ? selectedShellColor
                         : selectedIpsColor,
                   }}
@@ -377,28 +309,28 @@ export default function Configurator() {
             <div
               className={`mt-2 ${openSection === index ? 'block' : 'hidden'}`}
             >
-              {/* Color options */}
               <div className="flex flex-wrap">
-                {colorOptions[section as keyof typeof colorOptions].map(
-                  (color, colorIndex) => (
-                    <div
-                      key={colorIndex}
-                      className="w-6 h-6 m-1 cursor-pointer rounded-full"
-                      style={{ backgroundColor: color }}
-                      onClick={() => {
-                        console.log(`Selected color for ${section}:`, color);
-                        if (section === 'PADS')
-                          setSelectedPadColor(color as PADColorType);
-                        if (section === 'BUTTONS')
-                          setSelectedButtonColor(color as BUTTONColorType);
-                        if (section === 'SHELLS')
-                          setSelectedShellColor(color as SHELLColorType);
-                        if (section === 'IPS')
-                          setSelectedIpsColor(color as IPSColorType);
-                      }}
-                    ></div>
-                  ),
-                )}
+                {option.sub_categories.map((subCategory) => (
+                  <div
+                    key={subCategory._id}
+                    className="w-6 h-6 m-1 cursor-pointer rounded-full"
+                    style={{ backgroundColor: subCategory.color_hexadecimal }}
+                    onClick={() => {
+                      console.log(
+                        `Selected color for ${option.option_type}:`,
+                        subCategory.color_hexadecimal,
+                      );
+                      if (option.option_type === 'GBA_PAD')
+                        setSelectedPadColor(subCategory.color_hexadecimal);
+                      if (option.option_type === 'GBA_BUTTON')
+                        setSelectedButtonColor(subCategory.color_hexadecimal);
+                      if (option.option_type === 'GBA_SHELL')
+                        setSelectedShellColor(subCategory.color_hexadecimal);
+                      if (option.option_type === 'GBA_IPS')
+                        setSelectedIpsColor(subCategory.color_hexadecimal);
+                    }}
+                  ></div>
+                ))}
               </div>
             </div>
           </div>
@@ -408,10 +340,22 @@ export default function Configurator() {
         </div>
         <PriceSection
           totalPrice={totalPrice}
-          selectedPadColor={colorNames[selectedPadColor]}
-          selectedButtonColor={colorNames[selectedButtonColor]}
-          selectedShellColor={colorNames[selectedShellColor]}
-          selectedIpsColor={colorNames[selectedIpsColor]}
+          selectedPadColor={
+            selectedPadColor !== '#000000' ? selectedPadColor : 'default color'
+          }
+          selectedButtonColor={
+            selectedButtonColor !== '#000000'
+              ? selectedButtonColor
+              : 'default color'
+          }
+          selectedShellColor={
+            selectedShellColor !== '#000000'
+              ? selectedShellColor
+              : 'default color'
+          }
+          selectedIpsColor={
+            selectedIpsColor !== '#000000' ? selectedIpsColor : 'default color'
+          }
         />
       </div>
     </div>
