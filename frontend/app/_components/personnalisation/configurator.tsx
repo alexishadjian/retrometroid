@@ -151,7 +151,7 @@ const IPS_COLORS: Record<string, StaticImageData> = {
 };
 
 export default function Configurator({ productId }: { productId: string }) {
-  const basePrice = 100; // Prix de base de la console
+  const basePrice = 100;
 
   const [selectedPadColor, setSelectedPadColor] = useState<string>('#000000');
   const [selectedButtonColor, setSelectedButtonColor] =
