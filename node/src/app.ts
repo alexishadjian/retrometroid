@@ -7,20 +7,21 @@ import optionRoutes from './routes/optionRouter';
 import subcategoryRoutes from './routes/subCategoriesRouter';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './swaggerConfig';
+import cors from 'cors';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-const cors = require('cors');
-
 const isProduction = process.env.NODE_ENV === 'production';
 
 const corsOptions = {
   origin: isProduction ? process.env.URL_PROD : process.env.URL_DEV,
+  credentials: true,
 };
 
+console.log(`CORS Origin: ${corsOptions.origin}`);
 app.use(cors(corsOptions));
 
 // Connexion à MongoDB
