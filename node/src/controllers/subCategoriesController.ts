@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import {
   getAllSubcategories,
   createSubcategory,
+  deleteSubcategory,
+  updateSubcategory,
 } from '../services/subCategoriesServices';
 
 /**
@@ -39,5 +41,41 @@ export const createNewSubcategory = async (req: Request, res: Response) => {
     res
       .status(400)
       .json({ message: 'An error occurred while creating the subcategory.' });
+  }
+};
+
+/**
+ * Delete a subcategory by ID
+ * @param req Express request object
+ * @param res Express response object
+ */
+export const deleteSubcategoryById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    await deleteSubcategory(id);
+    res.status(204).send();
+  } catch (err: any) {
+    console.error('Error deleting subcategory:', err.message);
+    res
+      .status(500)
+      .json({ message: 'An error occurred while deleting the subcategory.' });
+  }
+};
+
+/**
+ * Update a subcategory by ID
+ * @param req Express request object
+ * @param res Express response object
+ */
+export const updateSubcategoryById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const updatedSubcategory = await updateSubcategory(id, req.body);
+    res.json(updatedSubcategory);
+  } catch (err: any) {
+    console.error('Error updating subcategory:', err.message);
+    res
+      .status(500)
+      .json({ message: 'An error occurred while updating the subcategory.' });
   }
 };

@@ -2,6 +2,8 @@ import express from 'express';
 import {
   getSubcategories,
   createNewSubcategory,
+  updateSubcategoryById,
+  deleteSubcategoryById,
 } from '../controllers/subCategoriesController';
 
 const subcategoryRoutes = express.Router();
@@ -60,5 +62,57 @@ subcategoryRoutes.get('/', getSubcategories);
  *         description: Bad request
  */
 subcategoryRoutes.post('/', createNewSubcategory);
+
+/**
+ * @swagger
+ * /api/subcategories/{id}:
+ *   delete:
+ *     summary: Delete a subcategory by ID
+ *     tags: [Subcategories]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the subcategory to delete
+ *     responses:
+ *       204:
+ *         description: The subcategory was deleted
+ *       404:
+ *         description: Subcategory not found
+ */
+subcategoryRoutes.delete('/:id', deleteSubcategoryById);
+
+/**
+ * @swagger
+ * /api/subcategories/{id}:
+ *   patch:
+ *     summary: Update a subcategory by ID
+ *     tags: [Subcategories]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the subcategory to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Subcategory'
+ *     responses:
+ *       200:
+ *         description: The subcategory was updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Subcategory'
+ *       404:
+ *         description: Subcategory not found
+ */
+subcategoryRoutes.patch('/:id', updateSubcategoryById);
 
 export default subcategoryRoutes;

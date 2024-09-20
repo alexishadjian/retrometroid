@@ -1,5 +1,10 @@
 import express from 'express';
-import { getOptions, createNewOption } from '../controllers/optionsController';
+import {
+  getOptions,
+  createNewOption,
+  deleteOptionById,
+  updateOptionById,
+} from '../controllers/optionsController';
 
 const optionRoutes = express.Router();
 
@@ -51,5 +56,57 @@ optionRoutes.get('/', getOptions);
  *         description: Bad request
  */
 optionRoutes.post('/', createNewOption);
+
+/**
+ * @swagger
+ * /api/options/{id}:
+ *   delete:
+ *     summary: Delete an option by ID
+ *     tags: [Options]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the option to delete
+ *     responses:
+ *       204:
+ *         description: The option was deleted
+ *       404:
+ *         description: Option not found
+ */
+optionRoutes.delete('/:id', deleteOptionById);
+
+/**
+ * @swagger
+ * /api/options/{id}:
+ *   patch:
+ *     summary: Update an option by ID
+ *     tags: [Options]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the option to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Option'
+ *     responses:
+ *       200:
+ *         description: The option was updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Option'
+ *       404:
+ *         description: Option not found
+ */
+optionRoutes.patch('/:id', updateOptionById);
 
 export default optionRoutes;
