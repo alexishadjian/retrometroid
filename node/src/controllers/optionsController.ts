@@ -1,5 +1,10 @@
 import { Request, Response } from 'express';
-import { getAllOptions, createOption } from '../services/optionServices';
+import {
+  getAllOptions,
+  createOption,
+  deleteOption,
+  updateOption,
+} from '../services/optionServices';
 
 /**
  * Get all options
@@ -36,5 +41,41 @@ export const createNewOption = async (req: Request, res: Response) => {
     res
       .status(400)
       .json({ message: 'An error occurred while creating the option.' });
+  }
+};
+
+/**
+ * Delete an option by ID
+ * @param req Express request object
+ * @param res Express response object
+ */
+export const deleteOptionById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    await deleteOption(id);
+    res.status(204).send();
+  } catch (err: any) {
+    console.error('Error deleting option:', err.message);
+    res
+      .status(500)
+      .json({ message: 'An error occurred while deleting the option.' });
+  }
+};
+
+/**
+ * Update an option by ID
+ * @param req Express request object
+ * @param res Express response object
+ */
+export const updateOptionById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const updatedOption = await updateOption(id, req.body);
+    res.json(updatedOption);
+  } catch (err: any) {
+    console.error('Error updating option:', err.message);
+    res
+      .status(500)
+      .json({ message: 'An error occurred while updating the option.' });
   }
 };

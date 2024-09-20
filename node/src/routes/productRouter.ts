@@ -2,6 +2,8 @@ import express from 'express';
 import {
   getProducts,
   createNewProduct,
+  updateProductById,
+  deleteProductById,
 } from '../controllers/productsController';
 
 const router = express.Router();
@@ -54,5 +56,57 @@ router.get('/', getProducts);
  *         description: Bad request
  */
 router.post('/', createNewProduct);
+
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   delete:
+ *     summary: Delete a product by ID
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the product to delete
+ *     responses:
+ *       204:
+ *         description: The product was deleted
+ *       404:
+ *         description: Product not found
+ */
+router.delete('/:id', deleteProductById);
+
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   patch:
+ *     summary: Update a product by ID
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the product to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Product'
+ *     responses:
+ *       200:
+ *         description: The product was updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       404:
+ *         description: Product not found
+ */
+router.patch('/:id', updateProductById);
 
 export default router;

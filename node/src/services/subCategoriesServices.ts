@@ -52,3 +52,41 @@ export const createSubcategory = async (subcategoryData: any) => {
     throw new Error('An error occurred while creating the subcategory.');
   }
 };
+
+/**
+ * Delete a subcategory by ID.
+ * @param {string} id - The ID of the subcategory to delete.
+ * @returns {Promise<void>}
+ */
+export const deleteSubcategory = async (id: string) => {
+  try {
+    console.log(`Deleting subcategory with ID: ${id}`);
+    await Subcategories.findByIdAndDelete(id);
+    console.log(`Subcategory with ID: ${id} deleted successfully`);
+  } catch (err: any) {
+    console.error(`Error deleting subcategory with ID: ${id}`, err.message);
+    throw new Error(`An error occurred while deleting the subcategory.`);
+  }
+};
+
+/**
+ * Update a subcategory by ID.
+ * @param {string} id - The ID of the subcategory to update.
+ * @param {object} updateData - The data to update the subcategory with.
+ * @returns {Promise<Object>} The updated subcategory.
+ */
+export const updateSubcategory = async (id: string, updateData: any) => {
+  try {
+    console.log(`Updating subcategory with ID: ${id}`);
+    const updatedSubcategory = await Subcategories.findByIdAndUpdate(
+      id,
+      updateData,
+      { new: true },
+    );
+    console.log(`Subcategory with ID: ${id} updated successfully`);
+    return updatedSubcategory;
+  } catch (err: any) {
+    console.error(`Error updating subcategory with ID: ${id}`, err.message);
+    throw new Error(`An error occurred while updating the subcategory.`);
+  }
+};

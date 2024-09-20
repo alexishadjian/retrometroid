@@ -51,3 +51,39 @@ export const createOption = async (optionData: any) => {
     throw new Error('An error occurred while creating the option.');
   }
 };
+
+/**
+ * Delete an option by ID.
+ * @param {string} id - The ID of the option to delete.
+ * @returns {Promise<void>}
+ */
+export const deleteOption = async (id: string) => {
+  try {
+    console.log(`Deleting option with ID: ${id}`);
+    await Options.findByIdAndDelete(id);
+    console.log(`Option with ID: ${id} deleted successfully`);
+  } catch (err: any) {
+    console.error(`Error deleting option with ID: ${id}`, err.message);
+    throw new Error(`An error occurred while deleting the option.`);
+  }
+};
+
+/**
+ * Update an option by ID.
+ * @param {string} id - The ID of the option to update.
+ * @param {object} updateData - The data to update the option with.
+ * @returns {Promise<Object>} The updated option.
+ */
+export const updateOption = async (id: string, updateData: any) => {
+  try {
+    console.log(`Updating option with ID: ${id}`);
+    const updatedOption = await Options.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
+    console.log(`Option with ID: ${id} updated successfully`);
+    return updatedOption;
+  } catch (err: any) {
+    console.error(`Error updating option with ID: ${id}`, err.message);
+    throw new Error(`An error occurred while updating the option.`);
+  }
+};

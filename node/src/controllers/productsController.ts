@@ -1,5 +1,10 @@
 import { Request, Response } from 'express';
-import { getAllProducts, createProduct } from '../services/productServices';
+import {
+  getAllProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from '../services/productServices';
 
 /**
  * Get all products
@@ -36,5 +41,41 @@ export const createNewProduct = async (req: Request, res: Response) => {
     res
       .status(400)
       .json({ message: 'An error occurred while creating the product.' });
+  }
+};
+
+/**
+ * Delete a product by ID
+ * @param req Express request object
+ * @param res Express response object
+ */
+export const deleteProductById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    await deleteProduct(id);
+    res.status(204).send();
+  } catch (err: any) {
+    console.error('Error deleting product:', err.message);
+    res
+      .status(500)
+      .json({ message: 'An error occurred while deleting the product.' });
+  }
+};
+
+/**
+ * Update a product by ID
+ * @param req Express request object
+ * @param res Express response object
+ */
+export const updateProductById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const updatedProduct = await updateProduct(id, req.body);
+    res.json(updatedProduct);
+  } catch (err: any) {
+    console.error('Error updating product:', err.message);
+    res
+      .status(500)
+      .json({ message: 'An error occurred while updating the product.' });
   }
 };
