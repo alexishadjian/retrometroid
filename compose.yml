@@ -10,19 +10,19 @@ services:
       - './frontend:/home/node/app'
 
   node:
-    container_name: node-app
+    container_name: backend
     image: node:22-slim
     working_dir: /home/node/app
     command: /bin/sh -c 'npm config set strict-ssl false && npm install && npm run build && npm run start'
     ports:
       - '3001:3001'
     volumes:
-      - './node:/home/node/app'
+      - './backend:/home/node/app'
     environment:
       - MONGO_URI=mongodb://mongo:27017/db_ecommerce
 
   mongo:
-    container_name: mongo
+    container_name: database
     image: mongo:latest
     ports:
       - '27017:27017'

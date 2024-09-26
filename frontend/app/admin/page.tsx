@@ -6,8 +6,8 @@ import axios from 'axios';
 
 export default function Home() {
 
-    const API_URL = process.env.NEXT_PUBLIC_URL_API_PROD || 'http://localhost:3001/api';
-
+    const isProduction = process.env.NODE_ENV === 'production';
+    const API_URL = isProduction ? process.env.NEXT_PUBLIC_URL_API_PROD : process.env.NEXT_PUBLIC_URL_API_DEV;
 
     interface Product {
         _id: string;
