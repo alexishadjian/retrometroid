@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import Svg from '../_components/svg';
+import Svg from '@/components/svg';
 import axios from 'axios';
+import ProductSubcategories from '@/components/admin/product-subcategories';
 
 export default function Home() {
 
@@ -23,9 +24,16 @@ export default function Home() {
         option_type: string;
     }
 
+    interface Subcategory {
+        color_name: string;
+        color_hexadecimal: string;
+        option_id: string;
+    }
+
     const [products, setProducts] = useState<Product[]>([]);
     const [newProduct, setNewProduct] = useState({ name: '', price_initial: 0 });
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 
     // Récupération des produits (GET)
     const fetchProducts = async () => {
@@ -35,7 +43,7 @@ export default function Home() {
             console.log(res.data);
                          
         } catch (error) {
-            console.error("Erreur lors de la récupération des produits:", error);
+            console.error("Erreur lors de la récupération des produits :", error);
             setErrorMessage("Erreur lors de la récupération des produits.");
         }
     };
@@ -57,7 +65,7 @@ export default function Home() {
             setNewProduct({ name: '', price_initial: 0 });
             setErrorMessage(null);
         } catch (error) {
-            console.error("Erreur lors de la création du produit:", error);
+            console.error("Erreur lors de la création du produit :", error);
             setErrorMessage("Erreur lors de la création du produit.");
         }
     };
@@ -68,10 +76,37 @@ export default function Home() {
             await axios.delete(`${API_URL}/products/${id}`);
             setProducts(prevProducts => prevProducts.filter(product => product._id !== id));
         } catch (error) {
-            console.error("Erreur lors de la suppression du produit:", error);
+            console.error("Erreur lors de la suppression du produit :", error);
             setErrorMessage("Erreur lors de la suppression du produit.");
         }
     };
+
+    // Création d'une sous-catégorie (POST)
+    const createSubcategory = async (colorName: string, colorHexa: string, optionId: string) => {
+        try {
+            console.log(colorName, colorHexa, optionId);
+            if (!colorName || !colorHexa || !optionId) {
+                
+                setErrorMessage("Tous les champs doivent être remplis.");
+                return;
+            }
+            
+            const res = await axios.post(`${API_URL}/subcategories`, {
+                color_name: colorName,
+                color_hexadecimal: colorHexa,
+                option_id: optionId,
+            });
+
+            setErrorMessage(null);
+
+            return res.data;
+
+        } catch (error) {
+            console.error("Erreur lors de la création de la sous catégorie :", error);
+            setErrorMessage("Erreur lors de la création de la sous catégorie.");
+        }
+    };
+
 
     useEffect(() => {
         fetchProducts();
@@ -84,68 +119,39 @@ export default function Home() {
             {errorMessage && <p className="text-red-500">{errorMessage}</p>}
 
             <div className="flex flex-col rounded-xl overflow-hidden">
-                <div className="bg-[--white] p-5 flex gap-5">
-                    <span className="font-semibold w-1/6">Nom</span>
-                    <span className="font-semibold w-1/6">Prix</span>
-                    <span className="font-semibold w-1/6">Pads</span>
-                    <span className="font-semibold w-1/6">Button</span>
-                    <span className="font-semibold w-1/6">Shells</span>
-                    <span className="font-semibold w-1/6">Ips</span>
+                <div className="p-5 flex gap-5">
+                    <span className="text-gray-400 text-sm w-1/6">Nom</span>
+                    <span className="text-gray-400 text-sm w-1/6">Prix</span>
+                    <span className="text-gray-400 text-sm w-1/6">Pads</span>
+                    <span className="text-gray-400 text-sm w-1/6">Button</span>
+                    <span className="text-gray-400 text-sm w-1/6">Shells</span>
+                    <span className="text-gray-400 text-sm w-1/6">Ips</span>
                     <span className="w-[30px]"></span>
                 </div>
 
-                {products.map(product => (
-                    <div key={product._id} className="bg-[--white] p-5 flex items-center gap-5">
-                        <h2 className="w-1/6">{product.name}</h2>
-                        <p className="w-1/6">{product.price_initial}€</p>
-                        <div className="w-1/6 flex gap-1">
-                            {product.option_id.map((cat) => {
-                                if (cat.option_type === 'Pads' || cat.option_type === 'pads' || cat.option_type === 'PADS') {
-                                    return cat.sub_categories.map((sub) => (
-                                        <div key={sub.id} className="rounded-full w-[20px] aspect-square" style={{backgroundColor: sub.color_hexadecimal }}></div>
-                                    ));
-                                }
-                                return null;
-                            })}
+                <div className="flex flex-col gap-y-2">
+                    {products.map(product => (
+                        <div key={product._id} className="bg-[--white] p-5 flex items-center rounded-xl gap-5">
+                            
+                            <h2 className="w-1/6">{product.name}</h2>
+                            
+                            <p className="w-1/6">{product.price_initial}€</p>
+
+                            <ProductSubcategories options={product.option_id} createSubcategory={createSubcategory} type="pads" />
+                            <ProductSubcategories options={product.option_id} createSubcategory={createSubcategory} type="button" />
+                            <ProductSubcategories options={product.option_id} createSubcategory={createSubcategory} type="shells" />
+                            <ProductSubcategories options={product.option_id} createSubcategory={createSubcategory} type="ips" />
+                            
+                            <button className="w-[30px]" onClick={() => deleteProduct(product._id)}>
+                                <Svg name="cross" color='red' strokeWidth="1.5" width="18" height="18" />
+                            </button>
+
                         </div>
-                        <div className="w-1/6 flex gap-1">
-                            {product.option_id.map((cat) => {
-                                if (cat.option_type === 'Button' || cat.option_type === 'button' || cat.option_type === 'BUTTON') {
-                                    return cat.sub_categories.map((sub) => (
-                                        <div key={sub.id} className="rounded-full w-[20px] aspect-square" style={{backgroundColor: sub.color_hexadecimal }}></div>
-                                    ));
-                                }
-                                return null;
-                            })}
-                        </div>
-                        <div className="w-1/6 flex gap-1">
-                            {product.option_id.map((cat) => {
-                                if (cat.option_type === 'Shells' || cat.option_type === 'shells' || cat.option_type === 'SHELLS') {
-                                    return cat.sub_categories.map((sub) => (
-                                        <div key={sub.id} className="rounded-full w-[20px] aspect-square" style={{backgroundColor: sub.color_hexadecimal }}></div>
-                                    ));
-                                }
-                                return null;
-                            })}
-                        </div>
-                        <div className="w-1/6 flex gap-1">
-                            {product.option_id.map((cat) => {
-                                if (cat.option_type === 'Ips' || cat.option_type === 'ips' || cat.option_type === 'IPS') {
-                                    return cat.sub_categories.map((sub) => (
-                                        <div key={sub.id} className="rounded-full w-[20px] aspect-square" style={{backgroundColor: sub.color_hexadecimal }}></div>
-                                    ));
-                                }
-                                return null;
-                            })}
-                        </div>
-                        <button className="w-[30px]" onClick={() => deleteProduct(product._id)}>
-                            <Svg name="cross" color='red' strokeWidth="1.5" width="18" height="18" />
-                        </button>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-10">
                 <h3 className="text-lg mb-2">Créer un produit</h3>
                 <div className="bg-[--white] p-5 flex items-center gap-2 rounded-xl">
                     <input
