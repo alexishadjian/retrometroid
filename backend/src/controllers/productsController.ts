@@ -55,6 +55,7 @@ export const deleteProductById = async (req: Request, res: Response) => {
     const id = req.params.id;
     await deleteProduct(id);
     res.status(204).send();
+    res.json({ message: 'Product deleted successfully' });
   } catch (err: any) {
     console.error('Error deleting product:', err.message);
     res
