@@ -13,6 +13,7 @@ import Product3 from './home/product-3.webp';
 import Product4 from './home/product-4.png';
 import LimitedEditionImage1 from './home/limited-edition-image-1.webp';
 import LimitedEditionImage2 from './home/limited-edition-image-2.webp';
+import GbaShellDmg from './gba_front/GBA_SHELL_DMG.webp';
 
 export {
   Logo,
@@ -30,4 +31,5 @@ export {
   GBC3,
   GBC4,
   GBC5,
+  GbaShellDmg,
 };
