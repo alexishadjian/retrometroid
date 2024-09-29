@@ -6,6 +6,7 @@ import {
   deleteProductById,
   getProductById,
 } from '../controllers/productsController';
+import { validateProduct, validateIdParam } from '../middlewares/validators';
 
 const router = express.Router();
 
@@ -56,7 +57,7 @@ router.get('/', getProducts);
  *       400:
  *         description: Bad request
  */
-router.post('/', createNewProduct);
+router.post('/', validateProduct, createNewProduct);
 
 /**
  * @swagger
@@ -77,7 +78,7 @@ router.post('/', createNewProduct);
  *       404:
  *         description: Product not found
  */
-router.delete('/:id', deleteProductById);
+router.delete('/:id', validateIdParam, deleteProductById);
 
 /**
  * @swagger
@@ -108,8 +109,31 @@ router.delete('/:id', deleteProductById);
  *       404:
  *         description: Product not found
  */
-router.patch('/:id', updateProductById);
+router.patch('/:id', validateIdParam, validateProduct, updateProductById);
 
-router.get('/:id', getProductById);
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   get:
+ *     summary: Retrieve a product by its ID
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the product to retrieve
+ *     responses:
+ *       200:
+ *         description: The product retrieved
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       404:
+ *         description: Product not found
+ */
+router.get('/:id', validateIdParam, getProductById);
 
 export default router;

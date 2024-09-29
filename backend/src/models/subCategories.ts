@@ -1,10 +1,9 @@
 import mongoose, { Document, Schema, Model } from 'mongoose';
 
-// Define the interface for the Subcategory model
 interface ISubcategory extends Document {
   color_name: string;
   color_hexadecimal: string;
-  option_id: mongoose.Types.ObjectId; // ID of the option the subcategory belongs to
+  option_id: mongoose.Types.ObjectId;
 }
 
 /**
