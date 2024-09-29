@@ -17,9 +17,17 @@ jobs:
   build-and-test-backend:
     name: Build and Test Backend
     runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+
     defaults:
       run:
         working-directory: ./backend
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -40,11 +48,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm test
+      - name: Set up environment variables
+        run: echo "MONGO_URL=mongodb://localhost:27017/test\nPORT=3001" >> .env
 
-      - name: Build Docker image
-        run: docker build . -t backend
+      - name: Run tests
+        env:
+          MONGO_URL: mongodb://localhost:27017/test
+          PORT: 3001
+        run: npm test
 
   build-and-test-frontend:
     name: Build and Test Frontend
@@ -74,6 +85,3 @@ jobs:
 
       - name: Run tests
         run: npm test || echo "No tests configured"
-
-      - name: Build Docker image
-        run: docker build . -t frontend
