@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 import {
   getAllSubcategories,
   createSubcategory,
@@ -6,11 +7,6 @@ import {
   updateSubcategory,
 } from '../services/subCategoriesServices';
 
-/**
- * Get all subcategories
- * @param req Express request object
- * @param res Express response object
- */
 export const getSubcategories = async (req: Request, res: Response) => {
   try {
     console.log('Fetching all subcategories...');
@@ -25,12 +21,12 @@ export const getSubcategories = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Create a new subcategory and add it to an option
- * @param req Express request object
- * @param res Express response object
- */
 export const createNewSubcategory = async (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     console.log('Creating a new subcategory with data:', req.body);
     const newSubcategory = await createSubcategory(req.body);
@@ -44,11 +40,6 @@ export const createNewSubcategory = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Delete a subcategory by ID
- * @param req Express request object
- * @param res Express response object
- */
 export const deleteSubcategoryById = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
@@ -62,12 +53,12 @@ export const deleteSubcategoryById = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Update a subcategory by ID
- * @param req Express request object
- * @param res Express response object
- */
 export const updateSubcategoryById = async (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     const id = req.params.id;
     const updatedSubcategory = await updateSubcategory(id, req.body);

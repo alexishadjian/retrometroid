@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 import {
   getAllOptions,
   createOption,
@@ -6,11 +7,6 @@ import {
   updateOption,
 } from '../services/optionServices';
 
-/**
- * Get all options
- * @param req Express request object
- * @param res Express response object
- */
 export const getOptions = async (req: Request, res: Response) => {
   try {
     console.log('Fetching all options...');
@@ -25,12 +21,12 @@ export const getOptions = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Create a new option
- * @param req Express request object
- * @param res Express response object
- */
 export const createNewOption = async (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     console.log('Creating a new option with data:', req.body);
     const newOption = await createOption(req.body);
@@ -44,11 +40,6 @@ export const createNewOption = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Delete an option by ID
- * @param req Express request object
- * @param res Express response object
- */
 export const deleteOptionById = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
@@ -62,12 +53,12 @@ export const deleteOptionById = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Update an option by ID
- * @param req Express request object
- * @param res Express response object
- */
 export const updateOptionById = async (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     const id = req.params.id;
     const updatedOption = await updateOption(id, req.body);
