@@ -6,7 +6,7 @@ import { describe, it, expect } from '@jest/globals';
 const testOptionData = {
   option_type: 'Color',
   option_description: 'Red',
-  option_subcategory_id: '000000000000000000000000',
+  sub_categories: [],
 };
 
 const testProductData = {
@@ -18,11 +18,11 @@ const testProductData = {
 const testSubcategoryData = {
   color_name: 'Red',
   color_hexadecimal: '#FF0000',
-  option_subcategory_id: [],
+  option_id: '000000000000000000000000',
 };
 
 describe('API Tests', () => {
-  // Describe block for Product Routes
+  //& Product Routes
   describe('Product Routes', () => {
     // Test for getting all products
     it('should get all products', async () => {
@@ -47,7 +47,7 @@ describe('API Tests', () => {
         .post('/api/products')
         .send(productData)
         .expect(400);
-      expect(res.body.message).toBeDefined();
+      expect(res.body.errors).toBeDefined();
     });
 
     // Test for validation failure when price_initial is missing
@@ -57,11 +57,11 @@ describe('API Tests', () => {
         .post('/api/products')
         .send(productData)
         .expect(400);
-      expect(res.body.message).toBeDefined();
+      expect(res.body.errors).toBeDefined();
     });
   });
 
-  // Describe block for Option Routes
+  //& Options routes
   describe('Option Routes', () => {
     // Test for getting all options
     it('should get all options', async () => {
@@ -86,7 +86,7 @@ describe('API Tests', () => {
         .post('/api/options')
         .send(optionData)
         .expect(400);
-      expect(res.body.message).toBeDefined();
+      expect(res.body.errors).toBeDefined();
     });
 
     // Test for validation failure when option_description is missing
@@ -96,21 +96,11 @@ describe('API Tests', () => {
         .post('/api/options')
         .send(optionData)
         .expect(400);
-      expect(res.body.message).toBeDefined();
-    });
-
-    // Test for validation failure when option_subcategory_id is missing
-    it('should not create an option without option_subcategory_id', async () => {
-      const optionData = { ...testOptionData, option_subcategory_id: '' };
-      const res = await request(app)
-        .post('/api/options')
-        .send(optionData)
-        .expect(400);
-      expect(res.body.message).toBeDefined();
+      expect(res.body.errors).toBeDefined();
     });
   });
 
-  // Describe block for Subcategory Routes
+  //& Subcategory Routes
   describe('Subcategory Routes', () => {
     // Test for getting all subcategories
     it('should get all subcategories', async () => {
@@ -135,7 +125,7 @@ describe('API Tests', () => {
         .post('/api/subcategories')
         .send(subcategoryData)
         .expect(400);
-      expect(res.body.message).toBeDefined();
+      expect(res.body.errors).toBeDefined();
     });
 
     // Test for validation failure when color_hexadecimal is missing
@@ -145,20 +135,20 @@ describe('API Tests', () => {
         .post('/api/subcategories')
         .send(subcategoryData)
         .expect(400);
-      expect(res.body.message).toBeDefined();
+      expect(res.body.errors).toBeDefined();
     });
 
-    // Test for validation failure when option_subcategory_id is missing
-    it('should not create a subcategory without option_subcategory_id', async () => {
+    // Test for validation failure when option_id is missing
+    it('should not create a subcategory without option_id', async () => {
       const subcategoryData = {
         ...testSubcategoryData,
-        option_subcategory_id: '',
+        option_id: '',
       };
       const res = await request(app)
         .post('/api/subcategories')
         .send(subcategoryData)
         .expect(400);
-      expect(res.body.message).toBeDefined();
+      expect(res.body.errors).toBeDefined();
     });
   });
 });

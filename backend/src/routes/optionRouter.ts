@@ -5,6 +5,7 @@ import {
   deleteOptionById,
   updateOptionById,
 } from '../controllers/optionsController';
+import { validateOption, validateIdParam } from '../middlewares/validators';
 
 const optionRoutes = express.Router();
 
@@ -55,7 +56,7 @@ optionRoutes.get('/', getOptions);
  *       400:
  *         description: Bad request
  */
-optionRoutes.post('/', createNewOption);
+optionRoutes.post('/', validateOption, createNewOption);
 
 /**
  * @swagger
@@ -76,7 +77,7 @@ optionRoutes.post('/', createNewOption);
  *       404:
  *         description: Option not found
  */
-optionRoutes.delete('/:id', deleteOptionById);
+optionRoutes.delete('/:id', validateIdParam, deleteOptionById);
 
 /**
  * @swagger
@@ -107,6 +108,6 @@ optionRoutes.delete('/:id', deleteOptionById);
  *       404:
  *         description: Option not found
  */
-optionRoutes.patch('/:id', updateOptionById);
+optionRoutes.patch('/:id', validateIdParam, validateOption, updateOptionById);
 
 export default optionRoutes;

@@ -5,6 +5,10 @@ import {
   updateSubcategoryById,
   deleteSubcategoryById,
 } from '../controllers/subCategoriesController';
+import {
+  validateSubcategory,
+  validateIdParam,
+} from '../middlewares/validators';
 
 const subcategoryRoutes = express.Router();
 
@@ -61,7 +65,7 @@ subcategoryRoutes.get('/', getSubcategories);
  *       400:
  *         description: Bad request
  */
-subcategoryRoutes.post('/', createNewSubcategory);
+subcategoryRoutes.post('/', validateSubcategory, createNewSubcategory);
 
 /**
  * @swagger
@@ -82,7 +86,7 @@ subcategoryRoutes.post('/', createNewSubcategory);
  *       404:
  *         description: Subcategory not found
  */
-subcategoryRoutes.delete('/:id', deleteSubcategoryById);
+subcategoryRoutes.delete('/:id', validateIdParam, deleteSubcategoryById);
 
 /**
  * @swagger
@@ -113,6 +117,11 @@ subcategoryRoutes.delete('/:id', deleteSubcategoryById);
  *       404:
  *         description: Subcategory not found
  */
-subcategoryRoutes.patch('/:id', updateSubcategoryById);
+subcategoryRoutes.patch(
+  '/:id',
+  validateIdParam,
+  validateSubcategory,
+  updateSubcategoryById,
+);
 
 export default subcategoryRoutes;

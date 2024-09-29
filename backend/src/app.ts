@@ -8,6 +8,8 @@ import subcategoryRoutes from './routes/subCategoriesRouter';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './swaggerConfig';
 import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
 
 dotenv.config();
 
@@ -24,10 +26,16 @@ const corsOptions = {
 console.log(`CORS Origin: ${corsOptions.origin}`);
 app.use(cors(corsOptions));
 
+// Sécurité
+app.use(helmet());
+
+// Journalisation
+app.use(morgan(isProduction ? 'combined' : 'dev'));
+
 // Connexion à MongoDB
 connectDB();
 
-// Middleware
+// Parsing du corps des requêtes
 app.use(bodyParser.json());
 
 // Routes
@@ -37,6 +45,8 @@ app.use('/api/subcategories', subcategoryRoutes);
 
 // Swagger Documentation Route
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+export default app;
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -48,5 +58,3 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`Server listening on port ${PORT}`);
   });
 }
-
-export default app;
