@@ -1,6 +1,6 @@
-import ProductOption from '@/components/admin/product-option';
 import Svg from '@/components/svg';
 import Image from 'next/image';
+import ProductOptions from '@/components/admin/product-options';
 import { GbaShellDmg } from '@/images';
 
 type Props = {
@@ -29,12 +29,10 @@ export default function ProductCard({ product, deleteProduct }: Props) {
                 </div>
             </div>
 
-                <div className="">
-                    <h2 className="font-semibold mb-2">Options</h2>
-                    {product.option_id.map((option: any) => (
-                        <ProductOption option={option} />
-                    ))}
-                </div>
+            <div className="">
+                <h2 className="font-semibold mb-2">Options</h2>
+                <ProductOptions options={product.option_id} productId={product._id} />
+            </div>
 
             {/* <button className="w-[30px]" onClick={() => deleteProduct(product._id)}>
                 <Svg name="cross" color='red' strokeWidth="1.5" width="18" height="18" />

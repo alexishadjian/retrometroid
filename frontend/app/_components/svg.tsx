@@ -51,6 +51,15 @@ const icons: any = {
       <path d="M5 12l5 5l10 -10" />
     </svg>
   ),
+  bin: ({ color, strokeWidth, width, height }: SvgProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg"  width={width} height={height}  viewBox="0 0 24 24"  fill="none"  strokeWidth={strokeWidth} stroke={color}  strokeLinecap="round"  strokeLinejoin="round">
+      <path d="M4 7l16 0" />
+      <path d="M10 11l0 6" />
+      <path d="M14 11l0 6" />
+      <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+      <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+    </svg>
+  ),
   default: ({ color, strokeWidth, width, height }: SvgProps) => (
     <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 22 24" strokeWidth={strokeWidth} stroke={color} fill="none" strokeLinecap="round" strokeLinejoin="round">
       <path d="M19.5313 5.7925C20.2896 6.22367 20.7554 7.03075 20.75 7.90284V15.7938C20.75 16.6703 20.2701 17.4784 19.4955 17.9042L12.183 22.53C11.8205 22.729 11.4136 22.8334 11 22.8334C10.5864 22.8334 10.1795 22.729 9.817 22.53L2.5045 17.9042C2.12551 17.6971 1.80913 17.3919 1.58845 17.0207C1.36776 16.6494 1.25087 16.2257 1.25 15.7938V7.90175C1.25 7.02534 1.72992 6.21825 2.5045 5.7925L9.817 1.48084C10.1902 1.27504 10.6095 1.16711 11.0358 1.16711C11.462 1.16711 11.8813 1.27504 12.2545 1.48084L19.567 5.7925H19.5313Z"/>

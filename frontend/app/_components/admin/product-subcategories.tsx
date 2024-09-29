@@ -16,7 +16,7 @@ export default function ProductSubcategories({ subCategories: initialSubCategori
     const [subCategories, setSubCategories] = useState(initialSubCategories);
 
     const [colorName, setColorName] = useState('');
-    const [selectedColor, setSelectedColor] = useState('#000000');
+    const [colorHexa, setColorHexa] = useState('#000000');
     const [isVisible, setIsVisible] = useState(false);
     const [subcategoryId, setSubcategoryId] = useState<string | null>(null);
 
@@ -24,7 +24,7 @@ export default function ProductSubcategories({ subCategories: initialSubCategori
 
 
     // Create a new subcategory
-    const createSubcategory = async (colorName: string, colorHexa: string) => {
+    const createSubcategory = async () => {
         
         try {
             if (!colorName || !colorHexa) {
@@ -51,9 +51,7 @@ export default function ProductSubcategories({ subCategories: initialSubCategori
 
     // Delete a subcategory
     const deleteSubcategory = async (id: string) => {
-        try {
-            console.log('Deleting subcategory with id:', id);
-            
+        try {            
             await axios.delete(`${process.env.API_URL}/subcategories/${id}`);
 
             showAlert("Sous catégorie supprimée avec succès.", "success");
@@ -68,21 +66,21 @@ export default function ProductSubcategories({ subCategories: initialSubCategori
     };
 
 
-    const handleAdd = async (colorName: string, selectedColor: string,) => {
+    const handleAdd = async () => {
         // Create a new subcategory
-        await createSubcategory(colorName, selectedColor);        
+        await createSubcategory();        
         
         // Reset states
         setIsVisible(!isVisible);
         setColorName('');
-        setSelectedColor('#000000');
+        setColorHexa('#000000');
     }
 
     const handleCategoryClick = (subCategoryId: string, colorName: string, colorHexa: string) => {
         setSubcategoryId(subCategoryId); 
         setIsVisible(!isVisible);
         setColorName(colorName);
-        setSelectedColor(colorHexa);
+        setColorHexa(colorHexa);
     }
 
     const handleDelete = async () => {
@@ -93,7 +91,7 @@ export default function ProductSubcategories({ subCategories: initialSubCategori
             // Reset states
             setIsVisible(false);
             setColorName('');
-            setSelectedColor('#000000');
+            setColorHexa('#000000');
             setSubcategoryId(null);
         }
     };
@@ -111,7 +109,7 @@ export default function ProductSubcategories({ subCategories: initialSubCategori
             ))}
 
             <button 
-                className="bg-zinc-100 rounded-full w-[20px] aspect-square rotate-45 flex items-center justify-center relative"
+                className="bg-zinc-200 rounded-full w-[20px] aspect-square rotate-45 flex items-center justify-center relative"
                 onClick={() => {
                     setSubcategoryId(null);   
                     setIsVisible(!isVisible);
@@ -124,9 +122,8 @@ export default function ProductSubcategories({ subCategories: initialSubCategori
                 <div className='bg-[--white] absolute -translate-y-full p-3 rounded-lg shadow-sm flex items-center gap-x-2'>
                     <input 
                         type="color"
-                        className="" 
-                        onChange={(e) => setSelectedColor(e.target.value)}
-                        value={selectedColor}
+                        onChange={(e) => setColorHexa(e.target.value)}
+                        value={colorHexa}
                     />
                     <input 
                         type="text"
@@ -146,7 +143,7 @@ export default function ProductSubcategories({ subCategories: initialSubCategori
                         <Button
                             content="Ajouter"
                             size="small"
-                            onClick={() => handleAdd(colorName, selectedColor)}
+                            onClick={() => handleAdd()}
                         />
                     )}
                 </div>
