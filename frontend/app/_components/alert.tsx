@@ -16,7 +16,7 @@ export function AlertProvider({ children }: { children: ReactNode }) {
     const [message, setMessage] = useState('');
     const [type, setType] = useState('');
     const [isVisible, setIsVisible] = useState(false);
-    const [accentColor, setAccentColor] = useState({ tailwind: '', hexa: '' });
+    const [accentColor, setAccentColor] = useState('');
 
     const duration = 4000;
 
@@ -24,10 +24,7 @@ export function AlertProvider({ children }: { children: ReactNode }) {
     const showAlert = (message: string, type: string) => {
         setMessage(message);
         setType(type);
-        setAccentColor({
-            tailwind: type == 'succes' ? 'green-500' : 'red-500', 
-            hexa: type == 'success' ? '#008000' : '#FF0000'
-        });
+        setAccentColor(type == 'success' ? '#008000' : '#FF0000');
         
         if (!isVisible) setTimeout(() => { hideAlert() }, duration); // start the timer if the alert isn't already visible
         
@@ -50,14 +47,15 @@ export function AlertProvider({ children }: { children: ReactNode }) {
                     transitionProperty: 'transform, opacity',
                 }}    
             >
-                <div className="rounded-full w-6 aspect-square flex justify-center items-center" style={{background: accentColor.hexa}}>
+                <div className="rounded-full w-6 aspect-square flex justify-center items-center" style={{background: accentColor}}>
                     <Svg name={ type == 'success' ? 'check' : 'cross' } color="#FFFFFF" strokeWidth="2" width="16" height="16" />
                 </div>
                 <p>{message}</p>
 
                 <div
-                    className={`absolute bottom-1 left-3 right-3 h-1 origin-left ease-linear transition-transform scale-x-0 rounded-full bg-gradient-to-r from-transparent to-${accentColor.tailwind}`}
+                    className={`absolute bottom-1 left-3 right-3 h-1 origin-left ease-linear transition-transform scale-x-0 rounded-full`}
                     style={{
+                        background: `linear-gradient(to right, transparent, ${accentColor})`,
                         transform: isVisible ? 'scaleX(1)' : 'scaleX(0)',
                         transitionDuration: isVisible ? `${duration + 100}ms` : '0ms', // one way transition
                         transitionDelay: isVisible ? '0ms' : '100ms', // to avoid progressbar disappearing before the alert

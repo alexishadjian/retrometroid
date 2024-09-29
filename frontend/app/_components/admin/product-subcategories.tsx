@@ -6,25 +6,27 @@ import { useAlert } from '@/components/alert';
 
 
 type Props = {
-    subCategories: [any];
+    subCategories: any;
     optionId: string
 };
 
 
-export default function ProductSubcategories({ subCategories, optionId }: Props) {
+export default function ProductSubcategories({ subCategories: initialSubCategories, optionId }: Props) {
 
-    const [colorName, setColorName] = useState<string | null>(null);
+    const [subCategories, setSubCategories] = useState(initialSubCategories);
+
+    const [colorName, setColorName] = useState('');
     const [selectedColor, setSelectedColor] = useState('#000000');
     const [isVisible, setIsVisible] = useState(false);
+    const [subcategoryId, setSubcategoryId] = useState<string | null>(null);
 
     const { showAlert } = useAlert();
 
 
-    // Création d'une sous-catégorie (POST)
+    // Create a new subcategory
     const createSubcategory = async (colorName: string, colorHexa: string) => {
         
         try {
-            console.log(colorName, colorHexa, optionId);
             if (!colorName || !colorHexa) {
                 showAlert("Tous les champs doivent être remplis.", "error");            
                 return;
@@ -36,7 +38,10 @@ export default function ProductSubcategories({ subCategories, optionId }: Props)
                 option_id: optionId,
             });
 
-            return res.data;
+            showAlert("Sous catégorie créée avec succès.", "success");
+
+            // Add dynamically the new subcategory to the current option
+            setSubCategories([...subCategories, res.data]); 
 
         } catch (error) {
             console.error("Erreur lors de la création de la sous catégorie :", error);
@@ -44,30 +49,73 @@ export default function ProductSubcategories({ subCategories, optionId }: Props)
         }
     };
 
-    const handleClick = async (colorName: string, selectedColor: string,) => {
-        // Create a new subcategory
-        const res = await createSubcategory(colorName, selectedColor);        
-        
-        // Add dynamically the new subcategory to the current option
-        subCategories.push(res);
+    // Delete a subcategory
+    const deleteSubcategory = async (id: string) => {
+        try {
+            console.log('Deleting subcategory with id:', id);
+            
+            await axios.delete(`${process.env.API_URL}/subcategories/${id}`);
 
+            showAlert("Sous catégorie supprimée avec succès.", "success");
+
+            // Remove dynamically the deleted subcategory from the current option
+            setSubCategories(subCategories.filter((sub: { _id: string; }) => sub._id !== id));
+            
+        } catch (error) {
+            console.error("Erreur lors de la suppression de la sous catégorie :", error);
+            showAlert("Erreur lors de la suppression de la sous catégorie.", "error");
+        }
+    };
+
+
+    const handleAdd = async (colorName: string, selectedColor: string,) => {
+        // Create a new subcategory
+        await createSubcategory(colorName, selectedColor);        
+        
         // Reset states
         setIsVisible(!isVisible);
-        setColorName(null);
+        setColorName('');
         setSelectedColor('#000000');
     }
+
+    const handleCategoryClick = (subCategoryId: string, colorName: string, colorHexa: string) => {
+        setSubcategoryId(subCategoryId); 
+        setIsVisible(!isVisible);
+        setColorName(colorName);
+        setSelectedColor(colorHexa);
+    }
+
+    const handleDelete = async () => {
+        if (subcategoryId) {
+            // Delete the subcategory
+            await deleteSubcategory(subcategoryId);            
+
+            // Reset states
+            setIsVisible(false);
+            setColorName('');
+            setSelectedColor('#000000');
+            setSubcategoryId(null);
+        }
+    };
 
     return (
         <div className="flex gap-1 flex-wrap relative mt-2">
 
-            {subCategories.map((sub: { id: string; color_hexadecimal: string }) => (
-                <div key={sub.id} className="rounded-full w-[20px] aspect-square" style={{backgroundColor: sub.color_hexadecimal }}></div>
+            {subCategories.map((sub: { _id: string; color_name: string; color_hexadecimal: string }) => (
+                <div 
+                    key={sub._id}
+                    className="rounded-full w-[20px] aspect-square cursor-pointer"
+                    style={{backgroundColor: sub.color_hexadecimal }}
+                    onClick={() => handleCategoryClick(sub._id, sub.color_name, sub.color_hexadecimal)}
+                ></div>
             ))}
 
             <button 
                 className="bg-zinc-100 rounded-full w-[20px] aspect-square rotate-45 flex items-center justify-center relative"
-                onClick={() => setIsVisible(!isVisible)}
-                // style={{ backgroundColor: (selectedColor.product_id == product._id) ? selectedColor.color : "#f4f4f5" }}
+                onClick={() => {
+                    setSubcategoryId(null);   
+                    setIsVisible(!isVisible);
+                }} 
             >
                 <Svg name="cross" color='gray' strokeWidth="2" width="14" height="14" />
             </button>
@@ -77,19 +125,30 @@ export default function ProductSubcategories({ subCategories, optionId }: Props)
                     <input 
                         type="color"
                         className="" 
-                        onChange={(e) => setSelectedColor(e.target.value) } 
+                        onChange={(e) => setSelectedColor(e.target.value)}
+                        value={selectedColor}
                     />
                     <input 
                         type="text"
-                        className="bg-[#f0efef] p-1 rounded"
+                        className="bg-slate-100 p-1 rounded"
                         placeholder="lemon"
-                        onChange={(e) => setColorName(e.target.value) } 
+                        onChange={(e) => setColorName(e.target.value)}
+                        value={colorName} 
                     />
-                    <Button 
-                        content="Ajouter"
-                        size="small"
-                        onClick={() => handleClick(colorName, selectedColor)}
-                    />
+                    {subcategoryId ? (
+                        <Button
+                            content="Supprimer"
+                            size="small"
+                            onClick={() => handleDelete()}
+                            color='red'
+                        />
+                    ) : (
+                        <Button
+                            content="Ajouter"
+                            size="small"
+                            onClick={() => handleAdd(colorName, selectedColor)}
+                        />
+                    )}
                 </div>
             )}
         </div>

@@ -31,7 +31,7 @@ export default function ProductCard({ product, deleteProduct }: Props) {
 
                 <div className="">
                     <h2 className="font-semibold mb-2">Options</h2>
-                    {product.option_id.map((option) => (
+                    {product.option_id.map((option: any) => (
                         <ProductOption option={option} />
                     ))}
                 </div>
