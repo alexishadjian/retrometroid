@@ -27,18 +27,18 @@ export default function PriceSection({
         - Couleur du boitier: ${selectedShellColor}
         - Couleur de l'écran: ${selectedIpsColor}`,
       short_description: 'Console GB personnalisée',
-      categories: [{ id: 1 }], // Mettez le bon ID de catégorie pour votre produit
+      categories: [{ id: 1 }],
     };
 
     console.log('Product data to be sent:', productData);
 
     const auth = `Basic ${Buffer.from(
-      'ck_bb8f230364904539050fff1a5b157f7378a00949:cs_1891b02d5b3cd3952c4c2e779c987a42284205c7',
+      `${process.env.NEXT_PUBLIC_WOOCOMMERCE_API_KEY}:${process.env.NEXT_PUBLIC_WOOCOMMERCE_API_SECRET}`,
     ).toString('base64')}`;
 
     try {
       const response = await axios.post(
-        'https://api-retrometroid.devprod.fr/wp-json/wc/v3/products',
+        `${process.env.NEXT_PUBLIC_WOOCOMMERCE_API_URL}/products`,
         productData,
         {
           headers: {
