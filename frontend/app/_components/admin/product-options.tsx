@@ -3,7 +3,7 @@ import ProductSubcategories from '@/components/admin/product-subcategories';
 import { useAlert } from '@/components/alert';
 import Svg from '@/components/svg';
 import axios from 'axios';
-import Button from '../button';
+import Button from '@/components/button';
 
 
 type Props = {
@@ -17,29 +17,30 @@ export default function ProductOptions({ options: initialOptions, productId }: P
     const { showAlert } = useAlert();
 
     const [options, setOptions] = useState(initialOptions);
-    const [type, setType] = useState('');
-    const [description, setDescription] = useState('');
+    const [newOption, setNewOption] = useState({ type: '', description: '' });
 
 
     // Create a new option
     const createOption = async () => {
         
         try {
-            if (!type || !description) {
+            if (!newOption.type || !newOption.description) {
                 showAlert("Tous les champs doivent être remplis.", "error");            
                 return;
             }
             
             const res = await axios.post(`${process.env.API_URL}/options`, {
-                option_type: type,
-                option_description: description,
+                option_type: newOption.type,
+                option_description: newOption.description,
                 product_id: productId,
             });
 
+            // Display a success message
             showAlert("Option créée avec succès.", "success");
-
             // Add dynamically the new option
-            setOptions([...options, res.data]); 
+            setOptions([...options, res.data]);
+            // Reset the form
+            setNewOption({ type: '', description: '' });
 
         } catch (error) {
             console.error("Erreur lors de la création de l'option :", error);
@@ -52,8 +53,8 @@ export default function ProductOptions({ options: initialOptions, productId }: P
         try {            
             await axios.delete(`${process.env.API_URL}/options/${id}`);
 
+            // Display a success message
             showAlert("Option supprimée avec succès.", "success");
-
             // Remove dynamically the deleted option
             setOptions(options.filter((sub: { _id: string; }) => sub._id !== id));
             
@@ -85,20 +86,24 @@ export default function ProductOptions({ options: initialOptions, productId }: P
                 <input 
                     type="text"
                     placeholder="Nom de l'option"
-                    className="p-2 rounded font-semibold bg-slate-100"
-                    onChange={(e) => setType(e.target.value)}
-                    value={type}
+                    className="p-2 rounded font-semibold border"
+                    onChange={(e) => setNewOption({ ...newOption, type: e.target.value })}
+                    value={newOption.type}
                 />
                 <textarea
                     placeholder="Description de l'option"
-                    className="p-2 rounded bg-slate-100"
-                    onChange={(e) => setDescription(e.target.value)}
-                    value={description}
+                    className="p-2 rounded border"
+                    onChange={(e) => setNewOption({ ...newOption, description: e.target.value })}
+                    value={newOption.description}
                 />
                 
             </div>
 
-            <Button content="Ajouter" onClick={createOption} size="small" color="gray" />
+            <Button
+                content="Ajouter"
+                onClick={createOption}
+                size="small"
+            />
 
         </div>
     );

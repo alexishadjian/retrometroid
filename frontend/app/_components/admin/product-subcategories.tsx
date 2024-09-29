@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Svg from '@/components/svg';
-import Button from '../button';
+import Button from '@/components/button';
 import axios from 'axios';
 import { useAlert } from '@/components/alert';
 
@@ -38,8 +38,8 @@ export default function ProductSubcategories({ subCategories: initialSubCategori
                 option_id: optionId,
             });
 
+            // Display a success message
             showAlert("Sous catégorie créée avec succès.", "success");
-
             // Add dynamically the new subcategory to the current option
             setSubCategories([...subCategories, res.data]); 
 
@@ -54,8 +54,8 @@ export default function ProductSubcategories({ subCategories: initialSubCategori
         try {            
             await axios.delete(`${process.env.API_URL}/subcategories/${id}`);
 
+            // Display a success message
             showAlert("Sous catégorie supprimée avec succès.", "success");
-
             // Remove dynamically the deleted subcategory from the current option
             setSubCategories(subCategories.filter((sub: { _id: string; }) => sub._id !== id));
             
