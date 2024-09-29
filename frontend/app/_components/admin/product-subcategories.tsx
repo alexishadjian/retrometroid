@@ -1,47 +1,66 @@
 import { useState } from 'react';
 import Svg from '@/components/svg';
 import Button from '../button';
+import axios from 'axios';
+import { useAlert } from '@/components/alert';
+
 
 type Props = {
-    options: any;
-    createSubcategory: any;
-    type: string;
+    subCategories: [any];
+    optionId: string
 };
 
 
-export default function ProductSubcategories({ options, createSubcategory, type }: Props) {
+export default function ProductSubcategories({ subCategories, optionId }: Props) {
 
     const [colorName, setColorName] = useState<string | null>(null);
     const [selectedColor, setSelectedColor] = useState('#000000');
-    const [optionId, setOptionId] = useState<string | null>(null);
     const [isVisible, setIsVisible] = useState(false);
 
-    const currentOption = options.find((cat) => cat.option_type === type);
+    const { showAlert } = useAlert();
 
-    if (currentOption && !optionId) {
-        setOptionId(currentOption._id);
-    } else {
 
-    }
+    // Création d'une sous-catégorie (POST)
+    const createSubcategory = async (colorName: string, colorHexa: string) => {
+        
+        try {
+            console.log(colorName, colorHexa, optionId);
+            if (!colorName || !colorHexa) {
+                showAlert("Tous les champs doivent être remplis.", "error");            
+                return;
+            }
+            
+            const res = await axios.post(`${process.env.API_URL}/subcategories`, {
+                color_name: colorName,
+                color_hexadecimal: colorHexa,
+                option_id: optionId,
+            });
 
-    const handleClick = async (colorName: string, selectedColor: string, optionId: string) => {
+            return res.data;
+
+        } catch (error) {
+            console.error("Erreur lors de la création de la sous catégorie :", error);
+            showAlert("Erreur lors de la création de la sous catégorie.", "error");
+        }
+    };
+
+    const handleClick = async (colorName: string, selectedColor: string,) => {
         // Create a new subcategory
-        const res = await createSubcategory(colorName, selectedColor, optionId);
+        const res = await createSubcategory(colorName, selectedColor);        
         
         // Add dynamically the new subcategory to the current option
-        currentOption.sub_categories.push(res);
+        subCategories.push(res);
 
         // Reset states
         setIsVisible(!isVisible);
-        setOptionId(null);
         setColorName(null);
         setSelectedColor('#000000');
     }
 
     return (
-        <div className="w-1/6 flex gap-1 flex-wrap relative">
+        <div className="flex gap-1 flex-wrap relative mt-2">
 
-            {currentOption && currentOption.sub_categories.map((sub: { id: string; color_hexadecimal: string }) => (
+            {subCategories.map((sub: { id: string; color_hexadecimal: string }) => (
                 <div key={sub.id} className="rounded-full w-[20px] aspect-square" style={{backgroundColor: sub.color_hexadecimal }}></div>
             ))}
 
@@ -69,7 +88,7 @@ export default function ProductSubcategories({ options, createSubcategory, type 
                     <Button 
                         content="Ajouter"
                         size="small"
-                        onClick={() => handleClick(colorName, selectedColor, optionId)}
+                        onClick={() => handleClick(colorName, selectedColor)}
                     />
                 </div>
             )}
