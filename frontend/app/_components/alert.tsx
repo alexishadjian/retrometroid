@@ -42,10 +42,12 @@ export function AlertProvider({ children }: { children: ReactNode }) {
         <AlertContext.Provider value={{ showAlert, hideAlert }}>
             {children}
             <div 
-                className="fixed bottom-4 right-4 flex gap-2 bg-[--white] p-4 pb-5 rounded-xl shadow-md z-50 transition-all duration-500 overflow-hidden"
+                className="fixed bottom-4 right-4 flex gap-2 bg-[--white] p-4 rounded-xl shadow-md z-50 transition-all duration-500 overflow-hidden"
                 style={{
                     transform: isVisible ? 'translateY(0)' : 'translateY(calc(100% + 1rem))',
                     opacity: isVisible ? 1 : 0,
+                    transitionDelay: isVisible ? '0ms, 50ms' : '50ms, 0ms', // opacity enter transition delay & transform out transition delay
+                    transitionProperty: 'transform, opacity',
                 }}    
             >
                 <div className="rounded-full w-6 aspect-square flex justify-center items-center" style={{background: accentColor.hexa}}>
@@ -54,11 +56,11 @@ export function AlertProvider({ children }: { children: ReactNode }) {
                 <p>{message}</p>
 
                 <div
-                    className={`absolute bottom-2 left-3 right-3 h-1 origin-left ease-linear transition-transform scale-x-0 rounded-full bg-gradient-to-r from-transparent to-${accentColor.tailwind}`}
+                    className={`absolute bottom-1 left-3 right-3 h-1 origin-left ease-linear transition-transform scale-x-0 rounded-full bg-gradient-to-r from-transparent to-${accentColor.tailwind}`}
                     style={{
                         transform: isVisible ? 'scaleX(1)' : 'scaleX(0)',
-                        transitionDuration: isVisible ? `${duration}ms` : '0ms', // One way transition
-                        transitionDelay: isVisible ? '0ms' : '100ms', // To avoid progressbar disappearing before the alert
+                        transitionDuration: isVisible ? `${duration + 100}ms` : '0ms', // one way transition
+                        transitionDelay: isVisible ? '0ms' : '100ms', // to avoid progressbar disappearing before the alert
                     }}
                 ></div>
             </div>

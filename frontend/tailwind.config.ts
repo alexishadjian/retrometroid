@@ -16,6 +16,8 @@ const config: Config = {
     'md:text-[80px]',
     'md:text-[90px]',
     'md:text-[100px]',
+    'to-red-500',
+    'to-green-500',
   ],
   theme: {
     extend: {
