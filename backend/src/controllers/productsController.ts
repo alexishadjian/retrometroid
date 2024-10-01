@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 import {
   getAllProducts,
   createProduct,
@@ -7,11 +8,6 @@ import {
   getProductById as getProductByIdService,
 } from '../services/productServices';
 
-/**
- * Get all products
- * @param req Express request object
- * @param res Express response object
- */
 export const getProducts = async (req: Request, res: Response) => {
   try {
     console.log('Fetching all products...');
@@ -26,12 +22,12 @@ export const getProducts = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Create a new product
- * @param req Express request object
- * @param res Express response object
- */
 export const createNewProduct = async (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     console.log('Creating a new product with data:', req.body);
     const newProduct = await createProduct(req.body);
@@ -45,11 +41,6 @@ export const createNewProduct = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Delete a product by ID
- * @param req Express request object
- * @param res Express response object
- */
 export const deleteProductById = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
@@ -63,12 +54,12 @@ export const deleteProductById = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Update a product by ID
- * @param req Express request object
- * @param res Express response object
- */
 export const updateProductById = async (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     const id = req.params.id;
     const updatedProduct = await updateProduct(id, req.body);
@@ -81,11 +72,6 @@ export const updateProductById = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Get a product by its ID
- * @param req Express request object
- * @param res Express response object
- */
 export const getProductById = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;

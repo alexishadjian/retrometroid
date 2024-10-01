@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "sonar": "dotenv -e .env sonar-scanner"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "sonar-scanner": "^3.1.0"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^7.4.2"
+  }
+}
