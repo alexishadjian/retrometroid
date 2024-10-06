@@ -12,11 +12,11 @@ type Props = {
 
 export default function ProductCard({ title, titleColor, subtitle, image, bgColor, width }: Props) {
     return (
-        <div className= {`flex flex-col justify-between rounded-3xl p-2 !bg-clip-content ${width === "big" ? "w-3/5" : "w-2/5"}`} style={{background: `linear-gradient(${bgColor})`}}>
+        <div className= {`flex flex-col justify-between rounded-3xl p-2 !bg-clip-content ${width === "big" ? "md:w-3/5" : "md:w-2/5"} w-full`} style={{background: `linear-gradient(${bgColor})`}}>
             <div className="py-14">
                 <HeadingButton
                     title={title}
-                    titleSize={60}
+                    titleSize={{sm: 45, md: 60}}
                     titleColor={titleColor}
                     subtitle={subtitle}
                     button="Personnaliser"

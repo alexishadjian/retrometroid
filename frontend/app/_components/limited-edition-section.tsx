@@ -27,7 +27,7 @@ export default function LimitedEditionSection() {
 
             <TitleSection title="Éditions Limitées" subtitle="Créés pour être unique" titleColor="#FFFFFF" bgColor="linear-gradient(191deg, #121212 40%, #293DF21F 100%)" />
 
-            <div className="">
+            <div>
                 <Swiper
                     modules={[Autoplay, Pagination]}
                     spaceBetween={10}
@@ -43,7 +43,7 @@ export default function LimitedEditionSection() {
                 
                     {slides.map(slide => (
                         <SwiperSlide key={slide.id}>
-                            <div className="flex items-center justify-center relative h-[90vh] rounded-xl overflow-hidden">
+                            <div className="flex items-center justify-center relative h-[70vh] md:h-[90vh] rounded-xl overflow-hidden">
                                 <Image
                                     className="absolute inset-0 z-[-1]"
                                     src={slide.image}
@@ -55,7 +55,7 @@ export default function LimitedEditionSection() {
                                 <div className="flex flex-col items-center justify-center h-1/2">
                                     <HeadingButton
                                         title={slide.title}
-                                        titleSize={80}
+                                        titleSize={{sm: 40, md: 80}}
                                         titleColor="#FFFFFF"
                                         subtitle={slide.subtitle}
                                         button="Découvrir"

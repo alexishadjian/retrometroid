@@ -6,14 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "echo \"No tests configured\" && exit 0"
   },
   "dependencies": {
+    "axios": "^1.7.7",
+    "lucide-react": "^0.441.0",
     "next": "14.2.11",
     "react": "^18",
     "react-dom": "^18",
-    "swiper": "^11.1.14",
-    "lucide-react": "^0.441.0"
+    "swiper": "^11.1.14"
   },
   "devDependencies": {
     "@types/node": "^20",
