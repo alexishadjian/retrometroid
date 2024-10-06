@@ -1,3 +1,4 @@
+import { AlertProvider } from "@/components/alert";
 import { Favicon } from "@/public/images";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -9,16 +10,17 @@ const roboto = Roboto({
     subsets: ["latin"],
     style: ['normal', 'italic'],
     weight: ["400", "500", "700"],
-    variable: "--font-roboto",
     display: 'swap',
+    variable: "--font-roboto",
 });
 const bebasNeue = Bebas_Neue({ 
     subsets: ["latin"],
     style: ['normal'],
     weight: ["400"],
-    variable: "--font-bebasNeue",
     display: 'swap',
+    variable: "--font-bebasNeue",
 });
+
 
 // CSS IMPORT
 import "./globals.css";
@@ -43,9 +45,13 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
     return (
         <html lang="en">
             <body className={`${roboto.className} ${roboto.variable} ${bebasNeue.variable} antialiased`} >
-                <Header />
-                {children}
-                <Footer />
+                <AlertProvider>
+                    <Header />
+                        <main>
+                            {children}
+                        </main>
+                    <Footer />
+                </AlertProvider>
             </body>
         </html>
     );

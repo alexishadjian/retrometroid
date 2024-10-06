@@ -3,9 +3,9 @@ import Svg from "@/components/svg";
 
 export default function Footer() {
     return (
-        <footer className="bg-[--black2] w-full wrapper flex justify-between items-center py-8">
+        <footer className="bg-[--black2] w-full wrapper flex flex-wrap md:flex-nowrap gap-10 justify-between items-center py-8">
             
-            <div>
+            <div className="w-full">
                 <p className="text-[--white] text-[15px] font-bebasNeue mb-4">Tous droits réservés - Retrometroid 2024</p>
 
                 <div className="flex items-center gap-4">
@@ -21,7 +21,7 @@ export default function Footer() {
                 </div>
             </div>
             
-            <nav className="flex flex-col gap-y-7 w-64">
+            <nav className="flex flex-col gap-y-7 w-full md:w-64">
                 <Link href="/" className="text-[--white] text-[15px] font-bebasNeue">Mentions légales</Link>
                 <Link href="/" className="text-[--white] text-[15px] font-bebasNeue">Conditions Générales de vente</Link>
                 <Link href="/" className="text-[--white] text-[15px] font-bebasNeue">Politique de confidentialité</Link>

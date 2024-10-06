@@ -13,22 +13,23 @@ import Product3 from './home/product-3.webp';
 import Product4 from './home/product-4.png';
 import LimitedEditionImage1 from './home/limited-edition-image-1.webp';
 import LimitedEditionImage2 from './home/limited-edition-image-2.webp';
-
+import GbaShellDmg from './gba_front/GBA_SHELL_DMG.webp';
 
 export {
-    Logo,
-    Favicon,
-    HeroSliderImage1,
-    HeroSliderImage2,
-    Product1,
-    Product2,
-    Product3,
-    Product4,
-    LimitedEditionImage1,
-    LimitedEditionImage2,
-    GBC1,
-    GBC2,
-    GBC3,
-    GBC4,
-    GBC5
-}
+  Logo,
+  Favicon,
+  HeroSliderImage1,
+  HeroSliderImage2,
+  Product1,
+  Product2,
+  Product3,
+  Product4,
+  LimitedEditionImage1,
+  LimitedEditionImage2,
+  GBC1,
+  GBC2,
+  GBC3,
+  GBC4,
+  GBC5,
+  GbaShellDmg,
+};

@@ -4,7 +4,7 @@ import { GBC3 } from '@/public/images';
 
 export default function StickersSection() {
   return (
-    <div className="bg-white">
+    <div className="bg-white py-10">
       <div className="max-w-4xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
         {/* Section Gauche : Titre et Texte */}
         <div className="flex flex-col items-center md:items-start md:text-left">

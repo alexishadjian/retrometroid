@@ -32,15 +32,15 @@ export default function HeroSliderSection() {
                 }}
                 loop={true}
                 pagination={{ clickable: true }}
-                autoplay={{
-                    delay: 3000,
-                    disableOnInteraction: false,
-                }}
+                // autoplay={{
+                //     delay: 3000,
+                //     disableOnInteraction: false,
+                // }}
             >   
             
                 {slides.map(slide => (
                     <SwiperSlide key={slide.id}>
-                        <div className="relative w-screen h-[93.2vh]">
+                        <div className="relative w-screen h-[80vh] md:h-[93.2vh]">
                             <Image
                                 className="absolute inset-0 z-[-1]"
                                 src={slide.image}
@@ -52,7 +52,7 @@ export default function HeroSliderSection() {
                             <div className="flex flex-col items-center justify-center h-1/2">
                                 <HeadingButton
                                     title={slide.title.content}
-                                    titleSize={100}
+                                    titleSize={{ sm: 70, md: 100}}
                                     titleColor={slide.title.color}
                                     subtitle={slide.subtitle}
                                     button="Découvrir"

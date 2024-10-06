@@ -8,23 +8,54 @@ services:
       - '3000:3000'
     volumes:
       - './frontend:/home/node/app'
-      # - /home/node/app/node_modules
 
-  backend:
+  node:
     container_name: backend
     image: node:22-slim
     working_dir: /home/node/app
-    command: /bin/sh -c 'npm config set strict-ssl false && npm install && node server.js'
+    command: /bin/sh -c 'npm config set strict-ssl false && npm install && npm run build && npm run start'
     ports:
       - '3001:3001'
     volumes:
       - './backend:/home/node/app'
-      # - /home/node/app/node_modules
     environment:
-      - MONGO_URI=mongodb://mongo:27017/mydatabase
+      - MONGO_URI=mongodb://mongo:27017/db_ecommerce
 
-  database:
+  mongo:
     container_name: database
     image: mongo:latest
     ports:
       - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube
+    ports:
+      - '9000:9000'
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    depends_on:
+      - db_sonarqube
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+
+  db_sonarqube:
+    image: postgres:latest
+    container_name: db_sonarqube
+    environment:
+      POSTGRES_USER: sonarqube
+      POSTGRES_PASSWORD: sonarqube
+      POSTGRES_DB: sonarqube
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+
+volumes:
+  mongo-data:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+  postgresql_data:
