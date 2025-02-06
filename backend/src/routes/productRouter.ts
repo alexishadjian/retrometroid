@@ -83,6 +83,31 @@ router.delete('/:id', validateIdParam, deleteProductById);
 /**
  * @swagger
  * /api/products/{id}:
+ *   get:
+ *     summary: Get a product by ID
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the product to get
+ *     responses:
+ *       200:
+ *         description: The product
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Product'
+ *       404:
+ *         description: Product not found
+ */
+router.get('/:id', validateIdParam, getProductById);
+
+/**
+ * @swagger
+ * /api/products/{id}:
  *   patch:
  *     summary: Update a product by ID
  *     tags: [Products]

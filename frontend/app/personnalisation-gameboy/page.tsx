@@ -5,7 +5,8 @@ import ProductHeader from '../_components/personnalisation/product-header';
 import StickersSection from '../_components/personnalisation/stickers-section';
 import SubHeader from '../_components/sub-header';
 
-const productId = '66ed3aec4efc2724b6ae419f'; // ID du produit
+// produit en dur pour le moment
+const productId = '67a4bad5efc7d8fc983dca5d'; // ID du produit Game Boy Classic
 
 export default function PersonnalisationGameboyPage() {
   return (
